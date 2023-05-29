@@ -1,4 +1,4 @@
-package com.daelim.daelim_hackathon.novel.dto;
+package com.daelim.daelim_hackathon.novel.dto.novel;
 
 import lombok.Data;
 import org.springframework.data.domain.Page;

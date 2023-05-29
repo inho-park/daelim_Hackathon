@@ -1,6 +1,7 @@
 package com.daelim.daelim_hackathon.novel.domain;
 
-import com.daelim.daelim_hackathon.author.domain.Author;
+import com.daelim.daelim_hackathon.author.domain.User;
+import com.daelim.daelim_hackathon.common.domain.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Novel {
+public class Novel extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +24,7 @@ public class Novel {
     private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Author host;
+    private User host;
 
 
 }

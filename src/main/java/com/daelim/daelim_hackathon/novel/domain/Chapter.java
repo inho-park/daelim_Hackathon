@@ -13,17 +13,14 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Page extends BaseTimeEntity {
+public class Chapter extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @Column
-    private int pageNum;
+    private String chapterName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Chapter chapter;
-
-    @Column(length = 2500)
-    private String content;
+    private Novel novel;
 }
