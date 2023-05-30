@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 @Log4j2
@@ -28,12 +29,23 @@ public class NovelServiceImpl implements NovelService{
     private final PageRepository pageRepository;
 
     @Override
-    public Long saveNovel(NovelDTO novelDTO) {
-        return null;
+    public StatusDTO saveNovel(NovelDTO novelDTO) {
+        Optional<User> option = userRepository.findByUsername(novelDTO.getHostUsername());
+        if(option.isPresent()) {
+            User host = option.get();
+            Novel novel = dtoTOEntity(novelDTO, host);
+            novelRepository.save(novel);
+            StatusDTO statusDTO = StatusDTO.builder().status("success").build();
+            return statusDTO;
+        } else {
+            throw new RuntimeException("This account doesn't exist");
+        }
     }
 
     @Override
-    public StatusDTO getNovel(Long novelId, String username) {
+    public NovelDTO getNovel(Long novelId, String username) {
+        Novel novel = novelRepository.findById(novelId).get();
+
         return null;
     }
 
@@ -50,7 +62,7 @@ public class NovelServiceImpl implements NovelService{
         if (userRepository.existsByUsername(username)) {
             result = novelRepository.getNovelsByHost(
                 pageRequestDTO.getPageable(Sort.by("id").descending()),
-                userRepository.findByUsername(username).getId()
+                userRepository.findByUsername(username).get().getId()
             );
             return new PageResultDTO<>(result, fn);
         } else {
@@ -64,7 +76,7 @@ public class NovelServiceImpl implements NovelService{
     }
 
     @Override
-    public Long modifyNovel(Long novelId, NovelDTO novelDTO) {
+    public StatusDTO modifyNovel(Long novelId, NovelDTO novelDTO) {
         return null;
     }
 }

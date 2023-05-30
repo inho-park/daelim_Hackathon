@@ -8,14 +8,13 @@ import com.daelim.daelim_hackathon.novel.dto.novel.PageResultDTO;
 import com.daelim.daelim_hackathon.novel.dto.novel.StatusDTO;
 
 public interface NovelService {
-    Long saveNovel(NovelDTO novelDTO);
-    StatusDTO getNovel(Long novelId, String username);
+    StatusDTO saveNovel(NovelDTO novelDTO);
+    NovelDTO getNovel(Long novelId, String username);
     PageResultDTO<NovelDTO, Object[]> getNovels(PageRequestDTO pageRequestDTO);
     StatusDTO deleteNovel(Long novelId, String username);
-    Long modifyNovel(Long novelId, NovelDTO novelDTO);
+    StatusDTO modifyNovel(Long novelId, NovelDTO novelDTO);
 
-    default Novel dtoTOEntity(NovelDTO dto) {
-        User host = User.builder().username(dto.getHostUsername()).build();
+    default Novel dtoTOEntity(NovelDTO dto, User host) {
         Novel novel = Novel.builder()
                 .id(dto.getNovelId())
                 .title(dto.getTitle())
@@ -31,7 +30,6 @@ public interface NovelService {
                 .modDate(novel.getModDate())
                 .title(novel.getTitle())
                 .hostUsername(host.getUsername())
-                .hostName(host.getName())
                 .build();
         return novelDTO;
     }

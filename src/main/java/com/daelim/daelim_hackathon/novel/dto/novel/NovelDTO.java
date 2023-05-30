@@ -11,6 +11,5 @@ public class NovelDTO {
     private Long novelId;
     private String title;
     private String hostUsername;
-    private String hostName;
     private LocalDateTime regDate,modDate;
 }
