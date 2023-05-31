@@ -24,7 +24,7 @@ public class Novel extends BaseTimeEntity {
     private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User host;
+    private User author;
 
 
 }

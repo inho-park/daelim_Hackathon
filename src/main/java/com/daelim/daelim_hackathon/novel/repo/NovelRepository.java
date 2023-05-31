@@ -10,9 +10,9 @@ import org.springframework.data.repository.query.Param;
 public interface NovelRepository extends JpaRepository<Novel, Long> {
 
     @Query(
-            "SELECT n, n.host " +
+            "SELECT n, n.author " +
             "FROM Novel n " +
-            "WHERE n.host.id =: id"
+            "WHERE n.author.id =: id"
     )
     Page<Object[]> getNovelsByHost(Pageable pageable, @Param("id") Long id);
 }

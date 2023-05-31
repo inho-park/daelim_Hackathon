@@ -45,7 +45,6 @@ public class NovelServiceImpl implements NovelService{
     @Override
     public NovelDTO getNovel(Long novelId, String username) {
         Novel novel = novelRepository.findById(novelId).get();
-
         return null;
     }
 

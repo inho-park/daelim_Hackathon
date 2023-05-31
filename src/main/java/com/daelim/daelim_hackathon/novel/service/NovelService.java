@@ -14,11 +14,11 @@ public interface NovelService {
     StatusDTO deleteNovel(Long novelId, String username);
     StatusDTO modifyNovel(Long novelId, NovelDTO novelDTO);
 
-    default Novel dtoTOEntity(NovelDTO dto, User host) {
+    default Novel dtoTOEntity(NovelDTO dto, User author) {
         Novel novel = Novel.builder()
                 .id(dto.getNovelId())
                 .title(dto.getTitle())
-                .host(host)
+                .author(author)
                 .build();
         return novel;
     }
