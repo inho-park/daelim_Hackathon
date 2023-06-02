@@ -23,13 +23,13 @@ public interface NovelService {
         return novel;
     }
 
-    default NovelDTO entityToDTO(Novel novel, User host) {
+    default NovelDTO entityToDTO(Novel novel, User author) {
         NovelDTO novelDTO = NovelDTO.builder()
                 .novelId(novel.getId())
                 .regDate(novel.getRegDate())
                 .modDate(novel.getModDate())
                 .title(novel.getTitle())
-                .hostUsername(host.getUsername())
+                .hostUsername(author.getUsername())
                 .build();
         return novelDTO;
     }

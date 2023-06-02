@@ -7,9 +7,7 @@ import com.daelim.daelim_hackathon.novel.dto.novel.NovelDTO;
 import com.daelim.daelim_hackathon.novel.dto.novel.PageRequestDTO;
 import com.daelim.daelim_hackathon.novel.dto.novel.PageResultDTO;
 import com.daelim.daelim_hackathon.novel.dto.novel.StatusDTO;
-import com.daelim.daelim_hackathon.novel.repo.ChapterRepository;
 import com.daelim.daelim_hackathon.novel.repo.NovelRepository;
-import com.daelim.daelim_hackathon.novel.repo.PageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -25,8 +23,6 @@ import java.util.function.Function;
 public class NovelServiceImpl implements NovelService{
     private final UserRepository userRepository;
     private final NovelRepository novelRepository;
-    private final ChapterRepository chapterRepository;
-    private final PageRepository pageRepository;
 
     @Override
     public StatusDTO saveNovel(NovelDTO novelDTO) {
@@ -44,8 +40,22 @@ public class NovelServiceImpl implements NovelService{
 
     @Override
     public NovelDTO getNovel(Long novelId, String username) {
-        Novel novel = novelRepository.findById(novelId).get();
-        return null;
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        Optional<Novel> novelOptional = novelRepository.findById(novelId);
+        User author;
+        Novel novel;
+        if (userOptional.isPresent()) {
+            author = userOptional.get();
+        } else {
+            throw new RuntimeException("This account doesn't exist");
+        }
+        if (novelOptional.isPresent()) {
+            novel = novelOptional.get();
+        } else {
+            throw new RuntimeException("Not found this novel");
+        }
+
+        return entityToDTO(novel, author);
     }
 
     @Override
