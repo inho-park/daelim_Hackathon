@@ -81,7 +81,15 @@ public class NovelServiceImpl implements NovelService{
 
     @Override
     public StatusDTO deleteNovel(Long novelId, String username) {
-        return null;
+        Optional<User> option = userRepository.findByUsername(username);
+        if(option.isPresent()) {
+            User host = option.get();
+            novelRepository.deleteByAuthor_Id(host.getId());
+            StatusDTO statusDTO = StatusDTO.builder().status("success").build();
+            return statusDTO;
+        } else {
+            throw new RuntimeException("This account doesn't exist");
+        }
     }
 
     @Override

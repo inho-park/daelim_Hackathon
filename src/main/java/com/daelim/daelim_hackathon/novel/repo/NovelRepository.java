@@ -15,4 +15,6 @@ public interface NovelRepository extends JpaRepository<Novel, Long> {
             "WHERE n.author.id =: id"
     )
     Page<Object[]> getNovelsByHost(Pageable pageable, @Param("id") Long id);
+
+    void deleteByAuthor_Id(Long userId);
 }
