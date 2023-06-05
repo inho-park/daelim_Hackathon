@@ -16,5 +16,10 @@ public interface NovelRepository extends JpaRepository<Novel, Long> {
     )
     Page<Object[]> getNovelsByHost(Pageable pageable, @Param("id") Long id);
 
-    void deleteByAuthor_Id(Long userId);
+    @Query(
+            "UPDATE Novel " +
+            "SET title =: title " +
+            "WHERE id =: id"
+    )
+    void updateTitle(@Param("id") Long id, @Param("title") String title);
 }

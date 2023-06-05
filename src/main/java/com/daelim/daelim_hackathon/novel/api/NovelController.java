@@ -1,6 +1,7 @@
 package com.daelim.daelim_hackathon.novel.api;
 
 import com.daelim.daelim_hackathon.author.dto.UsernameDTO;
+import com.daelim.daelim_hackathon.novel.dto.novel.ModifyDTO;
 import com.daelim.daelim_hackathon.novel.dto.novel.NovelDTO;
 import com.daelim.daelim_hackathon.novel.dto.novel.PageRequestDTO;
 import com.daelim.daelim_hackathon.novel.service.NovelService;
@@ -36,7 +37,7 @@ public class NovelController {
         }
     }
 
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity read(@PathVariable(value = "id") String id, @RequestBody UsernameDTO usernameDTO) {
         try {
             return new ResponseEntity<>(novelService.getNovel(Long.parseLong(id), usernameDTO.getUsername()), HttpStatus.OK);
@@ -46,7 +47,7 @@ public class NovelController {
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity modify(@PathVariable(value = "id") String id, @RequestBody NovelDTO dto) {
+    public ResponseEntity modify(@PathVariable(value = "id") String id, @RequestBody ModifyDTO dto) {
         try {
             return new ResponseEntity<>(novelService.modifyNovel(Long.parseLong(id), dto), HttpStatus.OK);
         }catch (Exception e) {

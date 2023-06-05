@@ -3,10 +3,7 @@ package com.daelim.daelim_hackathon.novel.service;
 import com.daelim.daelim_hackathon.author.domain.User;
 import com.daelim.daelim_hackathon.author.repo.UserRepository;
 import com.daelim.daelim_hackathon.novel.domain.Novel;
-import com.daelim.daelim_hackathon.novel.dto.novel.NovelDTO;
-import com.daelim.daelim_hackathon.novel.dto.novel.PageRequestDTO;
-import com.daelim.daelim_hackathon.novel.dto.novel.PageResultDTO;
-import com.daelim.daelim_hackathon.novel.dto.novel.StatusDTO;
+import com.daelim.daelim_hackathon.novel.dto.novel.*;
 import com.daelim.daelim_hackathon.novel.repo.NovelRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -28,11 +25,9 @@ public class NovelServiceImpl implements NovelService{
     public StatusDTO saveNovel(NovelDTO novelDTO) {
         Optional<User> option = userRepository.findByUsername(novelDTO.getHostUsername());
         if(option.isPresent()) {
-            User host = option.get();
-            Novel novel = dtoTOEntity(novelDTO, host);
+            Novel novel = dtoTOEntity(novelDTO, option.get());
             novelRepository.save(novel);
-            StatusDTO statusDTO = StatusDTO.builder().status("success").build();
-            return statusDTO;
+            return StatusDTO.builder().status("success").build();
         } else {
             throw new RuntimeException("This account doesn't exist");
         }
@@ -83,17 +78,26 @@ public class NovelServiceImpl implements NovelService{
     public StatusDTO deleteNovel(Long novelId, String username) {
         Optional<User> option = userRepository.findByUsername(username);
         if(option.isPresent()) {
-            User host = option.get();
-            novelRepository.deleteByAuthor_Id(host.getId());
-            StatusDTO statusDTO = StatusDTO.builder().status("success").build();
-            return statusDTO;
+            novelRepository.delete(
+                    Novel.builder()
+                            .id(novelId)
+                            .author(option.get())
+                            .build()
+            );
+            return StatusDTO.builder().status("success").build();
         } else {
             throw new RuntimeException("This account doesn't exist");
         }
     }
 
     @Override
-    public StatusDTO modifyNovel(Long novelId, NovelDTO novelDTO) {
-        return null;
+    public StatusDTO modifyNovel(Long novelId, ModifyDTO modifyDTO) {
+        Optional<User> userOptional = userRepository.findByUsername(modifyDTO.getUsername());
+        if(userOptional.isPresent()) {
+            novelRepository.updateTitle(novelId, modifyDTO.getTitle());
+            return StatusDTO.builder().status("success").build();
+        } else {
+            throw new RuntimeException("This account doesn't exist");
+        }
     }
 }

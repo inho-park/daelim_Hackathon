@@ -2,17 +2,14 @@ package com.daelim.daelim_hackathon.novel.service;
 
 import com.daelim.daelim_hackathon.author.domain.User;
 import com.daelim.daelim_hackathon.novel.domain.Novel;
-import com.daelim.daelim_hackathon.novel.dto.novel.NovelDTO;
-import com.daelim.daelim_hackathon.novel.dto.novel.PageRequestDTO;
-import com.daelim.daelim_hackathon.novel.dto.novel.PageResultDTO;
-import com.daelim.daelim_hackathon.novel.dto.novel.StatusDTO;
+import com.daelim.daelim_hackathon.novel.dto.novel.*;
 
 public interface NovelService {
     StatusDTO saveNovel(NovelDTO novelDTO);
     NovelDTO getNovel(Long novelId, String username);
     PageResultDTO<NovelDTO, Object[]> getNovels(PageRequestDTO pageRequestDTO);
     StatusDTO deleteNovel(Long novelId, String username);
-    StatusDTO modifyNovel(Long novelId, NovelDTO novelDTO);
+    StatusDTO modifyNovel(Long novelId, ModifyDTO modifyDTO);
 
     default Novel dtoTOEntity(NovelDTO dto, User author) {
         Novel novel = Novel.builder()
