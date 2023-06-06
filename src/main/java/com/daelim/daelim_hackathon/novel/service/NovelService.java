@@ -1,6 +1,8 @@
 package com.daelim.daelim_hackathon.novel.service;
 
 import com.daelim.daelim_hackathon.author.domain.User;
+import com.daelim.daelim_hackathon.common.dto.PageRequestDTO;
+import com.daelim.daelim_hackathon.common.dto.PageResultDTO;
 import com.daelim.daelim_hackathon.novel.domain.Novel;
 import com.daelim.daelim_hackathon.novel.dto.novel.*;
 

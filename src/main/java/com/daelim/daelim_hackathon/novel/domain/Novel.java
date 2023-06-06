@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -22,6 +23,9 @@ public class Novel extends BaseTimeEntity {
 
     @Column
     private String title;
+
+    @ColumnDefault("0")
+    private Long love;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User author;

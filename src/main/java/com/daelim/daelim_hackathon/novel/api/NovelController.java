@@ -3,7 +3,7 @@ package com.daelim.daelim_hackathon.novel.api;
 import com.daelim.daelim_hackathon.author.dto.UsernameDTO;
 import com.daelim.daelim_hackathon.novel.dto.novel.ModifyDTO;
 import com.daelim.daelim_hackathon.novel.dto.novel.NovelDTO;
-import com.daelim.daelim_hackathon.novel.dto.novel.PageRequestDTO;
+import com.daelim.daelim_hackathon.common.dto.PageRequestDTO;
 import com.daelim.daelim_hackathon.novel.service.NovelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
