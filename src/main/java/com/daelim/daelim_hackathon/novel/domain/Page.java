@@ -1,5 +1,6 @@
 package com.daelim.daelim_hackathon.novel.domain;
 
+import com.daelim.daelim_hackathon.author.domain.BooleanToYNConverter;
 import com.daelim.daelim_hackathon.common.domain.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +21,10 @@ public class Page extends BaseTimeEntity {
 
     @Column
     private int pageNum;
+
+    @Column(length = 1)
+    @Convert(converter = BooleanToYNConverter.class)
+    private boolean isImage;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Chapter chapter;

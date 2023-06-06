@@ -21,6 +21,12 @@ public class Chapter extends BaseTimeEntity {
     @Column
     private String chapterName;
 
+    @Column
+    private int totalPages;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Novel novel;
+
+    @OneToOne
+    private Chapter prevChapter;
 }
