@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.daelim.daelim_hackathon.drawing.repo.NovelDrawingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -21,11 +22,11 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class AwsS3Service {
-
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
     private final AmazonS3 amazonS3;
+    private final NovelDrawingRepository novelDrawingRepository;
 
     public List<String> uploadFile(List<MultipartFile> multipartFile) {
         List<String> fileNameList = new ArrayList<>();
@@ -58,8 +59,9 @@ public class AwsS3Service {
         return UUID.randomUUID().toString().concat(getFileExtension(fileName));
     }
 
-    private String getFileExtension(String fileName) { // file 형식이 잘못된 경우를 확인하기 위해 만들어진 로직이며, 파일 타입과 상관없이 업로드할 수 있게 하기 위해 .의 존재 유무만 판단하였습니다.
+    private String getFileExtension(String fileName) {
         try {
+            // 확장자 구분 하는 곳
             return fileName.substring(fileName.lastIndexOf("."));
         } catch (StringIndexOutOfBoundsException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "잘못된 형식의 파일(" + fileName + ") 입니다.");
