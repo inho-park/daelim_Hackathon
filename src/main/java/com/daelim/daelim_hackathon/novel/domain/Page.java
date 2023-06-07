@@ -34,6 +34,5 @@ public class Page extends BaseTimeEntity {
     private Chapter chapter;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @ColumnDefault("")
     private Page prev;
 }
