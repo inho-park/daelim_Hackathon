@@ -1,4 +1,4 @@
-package com.daelim.daelim_hackathon.author.domain;
+package com.daelim.daelim_hackathon.common.domain;
 
 import lombok.extern.log4j.Log4j2;
 
