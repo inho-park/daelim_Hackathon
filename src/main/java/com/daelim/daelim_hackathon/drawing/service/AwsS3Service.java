@@ -34,6 +34,12 @@ public class AwsS3Service {
     private final NovelDrawingRepository novelDrawingRepository;
     private final PageDrawingRepository pageDrawingRepository;
 
+    /**
+     *
+     * @param id
+     * @param multipartFile
+     * @return fileName
+     */
     public String saveNovelDrawing(Long id, MultipartFile multipartFile) {
         String fileName = uploadFile(multipartFile);
         novelDrawingRepository.save(

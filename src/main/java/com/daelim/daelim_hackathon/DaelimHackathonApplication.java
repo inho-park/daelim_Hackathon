@@ -2,7 +2,10 @@ package com.daelim.daelim_hackathon;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,10 +19,10 @@ public class DaelimHackathonApplication {
     }
 
     // security password 인코더 설정을 위한 빈설정
-//    @Bean
-//    PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(DaelimHackathonApplication.class, args);

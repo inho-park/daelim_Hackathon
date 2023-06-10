@@ -29,6 +29,7 @@ public class NovelController {
         try {
             return new ResponseEntity<>(novelService.getNovels(pageRequestDTO), HttpStatus.OK);
         }catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -38,6 +39,7 @@ public class NovelController {
         try {
             return new ResponseEntity<>(novelService.saveNovel(dto), HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -47,6 +49,7 @@ public class NovelController {
         try {
             return new ResponseEntity<>(novelService.getNovel(Long.parseLong(id), usernameDTO.getUsername()), HttpStatus.OK);
         }catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -56,6 +59,7 @@ public class NovelController {
         try {
             return new ResponseEntity<>(novelService.updateNovel(Long.parseLong(id), dto), HttpStatus.OK);
         }catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -65,23 +69,33 @@ public class NovelController {
         try {
             return new ResponseEntity<>(novelService.deleteNovel(Long.parseLong(id), usernameDTO.getUsername()), HttpStatus.OK);
         }catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    // upload novel title
-    @PostMapping(value = "/upload/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    /**
+     * 책 표지와 페이지 사이의 그림 table 을 구분 지어서 관리
+     * NovelController 에서 s3 service 호출
+     * @return 파일 경로에 해당하는 uuid 반환
+     */
+    @PostMapping(value = "/drawing/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity uploadFile(
             @RequestPart(value = "file", required = false) MultipartFile multipartFile,
             @PathVariable("id") String id
     ) {
-        awsS3Service.uploadFile(multipartFile);
-        return new ResponseEntity<>(
-                FileNameDTO.builder().fileName(awsS3Service.saveNovelDrawing(
-                        Long.parseLong(id),
-                        multipartFile
-                )).build(),
-                HttpStatus.OK
-        );
+        try {
+            awsS3Service.uploadFile(multipartFile);
+            return new ResponseEntity<>(
+                    FileNameDTO.builder().fileName(awsS3Service.saveNovelDrawing(
+                            Long.parseLong(id),
+                            multipartFile
+                    )).build(),
+                    HttpStatus.OK
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }
