@@ -1,6 +1,8 @@
 package com.daelim.daelim_hackathon.novel.api;
 
 import com.daelim.daelim_hackathon.author.dto.UsernameDTO;
+import com.daelim.daelim_hackathon.drawing.dto.FileNameDTO;
+import com.daelim.daelim_hackathon.drawing.service.AwsS3Service;
 import com.daelim.daelim_hackathon.novel.dto.novel.ModifyDTO;
 import com.daelim.daelim_hackathon.novel.dto.novel.NovelDTO;
 import com.daelim.daelim_hackathon.common.dto.PageRequestDTO;
@@ -11,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Log4j2
 @RestController
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/novels")
 public class NovelController {
     private final NovelService novelService;
+    private final AwsS3Service awsS3Service;
+
 
     @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getList(@RequestBody PageRequestDTO pageRequestDTO) {
@@ -49,7 +54,7 @@ public class NovelController {
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity modify(@PathVariable(value = "id") String id, @RequestBody ModifyDTO dto) {
         try {
-            return new ResponseEntity<>(novelService.modifyNovel(Long.parseLong(id), dto), HttpStatus.OK);
+            return new ResponseEntity<>(novelService.updateNovel(Long.parseLong(id), dto), HttpStatus.OK);
         }catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -62,5 +67,21 @@ public class NovelController {
         }catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    // upload novel title
+    @PostMapping(value = "/upload/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity uploadFile(
+            @RequestPart(value = "file", required = false) MultipartFile multipartFile,
+            @PathVariable("id") String id
+    ) {
+        awsS3Service.uploadFile(multipartFile);
+        return new ResponseEntity<>(
+                FileNameDTO.builder().fileName(awsS3Service.saveNovelDrawing(
+                        Long.parseLong(id),
+                        multipartFile
+                )).build(),
+                HttpStatus.OK
+        );
     }
 }

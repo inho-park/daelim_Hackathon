@@ -93,7 +93,7 @@ public class NovelServiceImpl implements NovelService{
     }
 
     @Override
-    public StatusDTO modifyNovel(Long novelId, ModifyDTO modifyDTO) {
+    public StatusDTO updateNovel(Long novelId, ModifyDTO modifyDTO) {
         Optional<User> userOptional = userRepository.findByUsername(modifyDTO.getUsername());
         if(userOptional.isPresent()) {
             novelRepository.updateTitle(novelId, modifyDTO.getTitle());

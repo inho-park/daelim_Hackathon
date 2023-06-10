@@ -1,7 +1,6 @@
 package com.daelim.daelim_hackathon.drawing.api;
 
 import com.daelim.daelim_hackathon.drawing.dto.FileNameDTO;
-import com.daelim.daelim_hackathon.drawing.dto.UploadFileDTO;
 import com.daelim.daelim_hackathon.drawing.service.AwsS3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -38,10 +37,9 @@ public class UploadController {
      * Amazon S3에 파일 업로드
      * @return 성공 시 200 OK와 함께 업로드 된 파일의 파일명 반환
      */
-    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity uploadFile(
-            @RequestPart(value = "file", required = false) MultipartFile multipartFile,
-            @RequestBody UploadFileDTO uploadFileDTO
+            @RequestPart(value = "file", required = false) MultipartFile multipartFile
     ) {
         awsS3Service.uploadFile(multipartFile);
         return new ResponseEntity<>(
