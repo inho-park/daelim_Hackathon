@@ -66,7 +66,7 @@ public class NovelServiceImpl implements NovelService{
         Page<Object[]> result;
         String username = pageRequestDTO.getUsername();
         if (userRepository.existsByUsername(username)) {
-            result = novelRepository.getNovelsByHost(
+            result = novelRepository.getNovelsByAuthor(
                 pageRequestDTO.getPageable(Sort.by("id").descending()),
                 userRepository.findByUsername(username).get().getId()
             );

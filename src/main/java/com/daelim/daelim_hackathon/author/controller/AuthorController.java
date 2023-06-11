@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("/authors")
 public class AuthorController {
 
     private final AuthorService authorService;
