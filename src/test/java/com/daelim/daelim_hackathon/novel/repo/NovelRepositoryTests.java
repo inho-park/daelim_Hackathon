@@ -97,7 +97,5 @@ public class NovelRepositoryTests {
             prev = pageRepository.getReferenceById(i - 1);
             result[(int) (i-2)] = pageRepository.modifyPrevPage(i, prev);
         }
-
-        for (int id : result) System.out.println(id);
     }
 }
