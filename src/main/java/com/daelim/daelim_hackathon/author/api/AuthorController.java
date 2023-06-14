@@ -1,4 +1,4 @@
-package com.daelim.daelim_hackathon.author.controller;
+package com.daelim.daelim_hackathon.author.api;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.daelim.daelim_hackathon.author.domain.Role;
 import com.daelim.daelim_hackathon.author.domain.User;
+import com.daelim.daelim_hackathon.author.dto.LoginDTO;
 import com.daelim.daelim_hackathon.author.dto.RoleToUserDTO;
 import com.daelim.daelim_hackathon.author.service.AuthorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -65,6 +66,7 @@ public class AuthorController {
 
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // header 에 authorization 으로 Bearer {refresh token} 받기 ( refresh token 은 쿠키로 관리 )
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {

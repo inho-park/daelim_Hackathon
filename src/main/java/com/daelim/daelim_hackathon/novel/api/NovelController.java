@@ -23,7 +23,6 @@ public class NovelController {
     private final NovelService novelService;
     private final AwsS3Service awsS3Service;
 
-
     @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getList(@RequestBody PageRequestDTO pageRequestDTO) {
         try {
