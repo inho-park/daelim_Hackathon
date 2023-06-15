@@ -1,9 +1,7 @@
 package com.daelim.daelim_hackathon.drawing.api;
 
 import com.daelim.daelim_hackathon.drawing.dto.FileNameDTO;
-import com.daelim.daelim_hackathon.drawing.dto.StringDTO;
 import com.daelim.daelim_hackathon.drawing.service.AwsS3Service;
-import com.daelim.daelim_hackathon.drawing.service.PapagoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,16 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/upload")
 public class UploadController {
     private final AwsS3Service awsS3Service;
-    private final PapagoService papagoService;
-
-    @PostMapping(value = "/translate")
-    public ResponseEntity getEn(@RequestBody StringDTO stringDTO) {
-        try {
-            return ResponseEntity.ok().body(papagoService.koToEn(stringDTO.getString()));
-        } catch(Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
 
     /**
      * Amazon S3에서 파일 가져오기

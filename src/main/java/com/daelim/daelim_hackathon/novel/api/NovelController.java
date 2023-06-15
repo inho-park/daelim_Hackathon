@@ -2,7 +2,9 @@ package com.daelim.daelim_hackathon.novel.api;
 
 import com.daelim.daelim_hackathon.author.dto.UsernameDTO;
 import com.daelim.daelim_hackathon.drawing.dto.FileNameDTO;
+import com.daelim.daelim_hackathon.drawing.dto.StringDTO;
 import com.daelim.daelim_hackathon.drawing.service.AwsS3Service;
+import com.daelim.daelim_hackathon.drawing.service.PapagoService;
 import com.daelim.daelim_hackathon.novel.dto.novel.ModifyDTO;
 import com.daelim.daelim_hackathon.novel.dto.novel.NovelDTO;
 import com.daelim.daelim_hackathon.common.dto.PageRequestDTO;
@@ -22,6 +24,16 @@ import org.springframework.web.multipart.MultipartFile;
 public class NovelController {
     private final NovelService novelService;
     private final AwsS3Service awsS3Service;
+    private final PapagoService papagoService;
+
+    @PostMapping(value = "/translate", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getEn(@RequestBody StringDTO stringDTO) {
+        try {
+            return ResponseEntity.ok().body(papagoService.koToEn(stringDTO.getString()));
+        } catch(Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
     @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getList(@RequestBody PageRequestDTO pageRequestDTO) {

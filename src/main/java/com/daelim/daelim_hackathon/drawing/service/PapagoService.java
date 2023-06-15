@@ -1,6 +1,7 @@
 package com.daelim.daelim_hackathon.drawing.service;
 
 import com.daelim.daelim_hackathon.drawing.dto.StringDTO;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+@Log4j2
 @Service
 public class PapagoService {
     @Value("${NAVER.clientId}")
@@ -53,7 +55,11 @@ public class PapagoService {
                 response.append(inputLine);
             }
             br.close();
-            System.out.println(response.toString());
+            log.info(response.toString());
+            int len = response.length();
+            response.delete(len - 4, len);
+            response.delete(0,78);
+            log.info(response.toString());
             return StringDTO.builder().string(response.toString()).build();
         } catch (Exception e) {
             e.printStackTrace();
