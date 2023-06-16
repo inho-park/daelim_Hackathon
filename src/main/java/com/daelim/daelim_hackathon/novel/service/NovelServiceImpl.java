@@ -2,10 +2,10 @@ package com.daelim.daelim_hackathon.novel.service;
 
 import com.daelim.daelim_hackathon.author.domain.User;
 import com.daelim.daelim_hackathon.author.repo.UserRepository;
-import com.daelim.daelim_hackathon.common.dto.PageRequestDTO;
+import com.daelim.daelim_hackathon.novel.dto.NovelPageRequestDTO;
 import com.daelim.daelim_hackathon.common.dto.PageResultDTO;
 import com.daelim.daelim_hackathon.novel.domain.Novel;
-import com.daelim.daelim_hackathon.novel.dto.ModifyDTO;
+import com.daelim.daelim_hackathon.novel.dto.NovelModifyDTO;
 import com.daelim.daelim_hackathon.novel.dto.NovelDTO;
 import com.daelim.daelim_hackathon.common.dto.StatusDTO;
 import com.daelim.daelim_hackathon.novel.repo.NovelRepository;
@@ -58,7 +58,7 @@ public class NovelServiceImpl implements NovelService{
     }
 
     @Override
-    public PageResultDTO<NovelDTO, Object[]> getNovels(PageRequestDTO pageRequestDTO) {
+    public PageResultDTO<NovelDTO, Object[]> getNovels(NovelPageRequestDTO pageRequestDTO) {
         Function<Object[], NovelDTO> fn = (
                 entity -> entityToDTO(
                         (Novel)entity[0],
@@ -95,7 +95,7 @@ public class NovelServiceImpl implements NovelService{
     }
 
     @Override
-    public StatusDTO updateNovel(Long novelId, ModifyDTO modifyDTO) {
+    public StatusDTO updateNovel(Long novelId, NovelModifyDTO modifyDTO) {
         Optional<User> userOptional = userRepository.findByUsername(modifyDTO.getUsername());
         if(userOptional.isPresent()) {
             Novel novel = novelRepository.getReferenceById(novelId);

@@ -1,4 +1,4 @@
-package com.daelim.daelim_hackathon.author.dto;
+package com.daelim.daelim_hackathon.common.dto;
 
 import lombok.Data;
 

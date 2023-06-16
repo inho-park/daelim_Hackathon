@@ -1,4 +1,4 @@
-package com.daelim.daelim_hackathon.common.dto;
+package com.daelim.daelim_hackathon.novel.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,13 +10,13 @@ import org.springframework.data.domain.Sort;
 @Data
 @Builder
 @AllArgsConstructor
-public class PageRequestDTO {
+public class NovelPageRequestDTO {
 
     private int page;
     private int size;
     private String username;
 
-    public PageRequestDTO() {
+    public NovelPageRequestDTO() {
         this.page = 1;
         this.size = 10;
     }

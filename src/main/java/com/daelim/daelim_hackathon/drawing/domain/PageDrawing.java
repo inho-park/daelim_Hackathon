@@ -1,6 +1,6 @@
 package com.daelim.daelim_hackathon.drawing.domain;
 
-import com.daelim.daelim_hackathon.novel.domain.Page;
+import com.daelim.daelim_hackathon.page.domain.Page;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.daelim.daelim_hackathon.novel.domain;
+package com.daelim.daelim_hackathon.page.domain;
 
 import com.daelim.daelim_hackathon.chapter.domain.Chapter;
 import com.daelim.daelim_hackathon.common.domain.BooleanToYNConverter;

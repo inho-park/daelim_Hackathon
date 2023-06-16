@@ -6,7 +6,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.daelim.daelim_hackathon.author.domain.Role;
 import com.daelim.daelim_hackathon.author.domain.User;
-import com.daelim.daelim_hackathon.author.dto.LoginDTO;
 import com.daelim.daelim_hackathon.author.dto.RoleToUserDTO;
 import com.daelim.daelim_hackathon.author.service.AuthorService;
 import com.fasterxml.jackson.databind.ObjectMapper;

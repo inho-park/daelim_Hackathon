@@ -1,13 +1,13 @@
 package com.daelim.daelim_hackathon.novel.resource;
 
-import com.daelim.daelim_hackathon.author.dto.UsernameDTO;
+import com.daelim.daelim_hackathon.common.dto.UsernameDTO;
 import com.daelim.daelim_hackathon.drawing.dto.FileNameDTO;
 import com.daelim.daelim_hackathon.drawing.dto.StringDTO;
 import com.daelim.daelim_hackathon.drawing.service.AwsS3Service;
 import com.daelim.daelim_hackathon.drawing.service.PapagoService;
-import com.daelim.daelim_hackathon.novel.dto.ModifyDTO;
+import com.daelim.daelim_hackathon.novel.dto.NovelModifyDTO;
 import com.daelim.daelim_hackathon.novel.dto.NovelDTO;
-import com.daelim.daelim_hackathon.common.dto.PageRequestDTO;
+import com.daelim.daelim_hackathon.novel.dto.NovelPageRequestDTO;
 import com.daelim.daelim_hackathon.novel.service.NovelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -41,7 +41,7 @@ public class NovelController {
     }
 
     @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getList(@RequestBody PageRequestDTO pageRequestDTO) {
+    public ResponseEntity getList(@RequestBody NovelPageRequestDTO pageRequestDTO) {
         try {
             return new ResponseEntity<>(novelService.getNovels(pageRequestDTO), HttpStatus.OK);
         }catch (Exception e) {
@@ -71,7 +71,7 @@ public class NovelController {
     }
 
     @PutMapping(value= "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity modify(@PathVariable(value = "id") String id, @RequestBody ModifyDTO dto) {
+    public ResponseEntity modify(@PathVariable(value = "id") String id, @RequestBody NovelModifyDTO dto) {
         try {
             return new ResponseEntity<>(novelService.updateNovel(Long.parseLong(id), dto), HttpStatus.OK);
         }catch (Exception e) {
