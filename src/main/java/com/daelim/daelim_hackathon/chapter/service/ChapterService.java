@@ -19,12 +19,12 @@ public interface ChapterService {
     StatusDTO deleteChapter(Long chapterId, String username);
     StatusDTO updateChapter(Long chapterId, ChapterModifyDTO modifyDTO);
 
-    default Chapter dtoToEntity(ChapterDTO dto, Novel novel) {
+    default Chapter dtoToEntity(ChapterDTO dto) {
 
         Chapter chapter = Chapter.builder()
                 .chapterName(dto.getChapterName())
                 .totalPages(dto.getTotalPages())
-                .novel(novel)
+                .novel(Novel.builder().id(dto.getNovelId()).build())
                 .prevChapter(Chapter.builder().id(dto.getPrevChapterId()).build())
                 .build();
 
