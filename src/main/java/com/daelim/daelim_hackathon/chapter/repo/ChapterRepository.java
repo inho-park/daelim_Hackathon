@@ -1,6 +1,6 @@
-package com.daelim.daelim_hackathon.novel.repo;
+package com.daelim.daelim_hackathon.chapter.repo;
 
-import com.daelim.daelim_hackathon.novel.domain.Chapter;
+import com.daelim.daelim_hackathon.chapter.domain.Chapter;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

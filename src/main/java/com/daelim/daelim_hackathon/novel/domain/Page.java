@@ -1,12 +1,12 @@
 package com.daelim.daelim_hackathon.novel.domain;
 
+import com.daelim.daelim_hackathon.chapter.domain.Chapter;
 import com.daelim.daelim_hackathon.common.domain.BooleanToYNConverter;
 import com.daelim.daelim_hackathon.common.domain.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 

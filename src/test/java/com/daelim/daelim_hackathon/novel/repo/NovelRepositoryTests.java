@@ -2,15 +2,13 @@ package com.daelim.daelim_hackathon.novel.repo;
 
 import com.daelim.daelim_hackathon.author.domain.User;
 import com.daelim.daelim_hackathon.author.repo.UserRepository;
-import com.daelim.daelim_hackathon.novel.domain.Chapter;
+import com.daelim.daelim_hackathon.chapter.domain.Chapter;
+import com.daelim.daelim_hackathon.chapter.repo.ChapterRepository;
 import com.daelim.daelim_hackathon.novel.domain.Novel;
 import com.daelim.daelim_hackathon.novel.domain.Page;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.stream.IntStream;
 
 @SpringBootTest
 public class NovelRepositoryTests {

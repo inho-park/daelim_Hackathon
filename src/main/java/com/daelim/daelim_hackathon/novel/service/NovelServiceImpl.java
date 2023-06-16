@@ -5,7 +5,9 @@ import com.daelim.daelim_hackathon.author.repo.UserRepository;
 import com.daelim.daelim_hackathon.common.dto.PageRequestDTO;
 import com.daelim.daelim_hackathon.common.dto.PageResultDTO;
 import com.daelim.daelim_hackathon.novel.domain.Novel;
-import com.daelim.daelim_hackathon.novel.dto.novel.*;
+import com.daelim.daelim_hackathon.novel.dto.ModifyDTO;
+import com.daelim.daelim_hackathon.novel.dto.NovelDTO;
+import com.daelim.daelim_hackathon.common.dto.StatusDTO;
 import com.daelim.daelim_hackathon.novel.repo.NovelRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -25,9 +27,9 @@ public class NovelServiceImpl implements NovelService{
 
     @Override
     public StatusDTO saveNovel(NovelDTO novelDTO) {
-        Optional<User> option = userRepository.findByUsername(novelDTO.getHostUsername());
+        Optional<User> option = userRepository.findByUsername(novelDTO.getUsername());
         if(option.isPresent()) {
-            Novel novel = dtoTOEntity(novelDTO, option.get());
+            Novel novel = dtoToEntity(novelDTO, option.get());
             novelRepository.save(novel);
             return StatusDTO.builder().status("success").build();
         } else {
@@ -96,7 +98,9 @@ public class NovelServiceImpl implements NovelService{
     public StatusDTO updateNovel(Long novelId, ModifyDTO modifyDTO) {
         Optional<User> userOptional = userRepository.findByUsername(modifyDTO.getUsername());
         if(userOptional.isPresent()) {
-            novelRepository.updateTitle(novelId, modifyDTO.getTitle());
+            Novel novel = novelRepository.getReferenceById(novelId);
+            novel.changeTitle(modifyDTO.getTitle());
+            novelRepository.save(novel);
             return StatusDTO.builder().status("success").build();
         } else {
             throw new RuntimeException("This account doesn't exist");

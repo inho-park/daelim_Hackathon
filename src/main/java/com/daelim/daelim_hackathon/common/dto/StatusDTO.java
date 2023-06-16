@@ -1,4 +1,4 @@
-package com.daelim.daelim_hackathon.novel.dto.novel;
+package com.daelim.daelim_hackathon.common.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,12 +1,12 @@
-package com.daelim.daelim_hackathon.novel.api;
+package com.daelim.daelim_hackathon.novel.resource;
 
 import com.daelim.daelim_hackathon.author.dto.UsernameDTO;
 import com.daelim.daelim_hackathon.drawing.dto.FileNameDTO;
 import com.daelim.daelim_hackathon.drawing.dto.StringDTO;
 import com.daelim.daelim_hackathon.drawing.service.AwsS3Service;
 import com.daelim.daelim_hackathon.drawing.service.PapagoService;
-import com.daelim.daelim_hackathon.novel.dto.novel.ModifyDTO;
-import com.daelim.daelim_hackathon.novel.dto.novel.NovelDTO;
+import com.daelim.daelim_hackathon.novel.dto.ModifyDTO;
+import com.daelim.daelim_hackathon.novel.dto.NovelDTO;
 import com.daelim.daelim_hackathon.common.dto.PageRequestDTO;
 import com.daelim.daelim_hackathon.novel.service.NovelService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +26,11 @@ public class NovelController {
     private final AwsS3Service awsS3Service;
     private final PapagoService papagoService;
 
+    /**
+     *
+     * @param stringDTO
+     * @return stringDTO(string = 영어로 번역된 문자열)
+     */
     @PostMapping(value = "/translate", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getEn(@RequestBody StringDTO stringDTO) {
         try {
@@ -65,7 +70,7 @@ public class NovelController {
         }
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value= "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity modify(@PathVariable(value = "id") String id, @RequestBody ModifyDTO dto) {
         try {
             return new ResponseEntity<>(novelService.updateNovel(Long.parseLong(id), dto), HttpStatus.OK);
@@ -75,7 +80,7 @@ public class NovelController {
         }
     }
 
-    @DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity delete(@PathVariable(value = "id") String id, @RequestBody UsernameDTO usernameDTO) {
         try {
             return new ResponseEntity<>(novelService.deleteNovel(Long.parseLong(id), usernameDTO.getUsername()), HttpStatus.OK);
