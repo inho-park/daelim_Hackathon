@@ -1,9 +1,9 @@
-package com.daelim.daelim_hackathon.novel.dto;
+package com.daelim.daelim_hackathon.chapter.dto;
 
 import lombok.Data;
 
 @Data
-public class ModifyDTO {
+public class ChapterModifyDTO {
     private String username;
     private String title;
 }
