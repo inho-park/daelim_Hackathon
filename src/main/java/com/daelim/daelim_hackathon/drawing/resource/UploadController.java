@@ -1,4 +1,4 @@
-package com.daelim.daelim_hackathon.drawing.api;
+package com.daelim.daelim_hackathon.drawing.resource;
 
 import com.daelim.daelim_hackathon.drawing.dto.FileNameDTO;
 import com.daelim.daelim_hackathon.drawing.service.AwsS3Service;

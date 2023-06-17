@@ -1,7 +1,7 @@
 package com.daelim.daelim_hackathon.chapter.resource;
 
 import com.daelim.daelim_hackathon.chapter.dto.ChapterModifyDTO;
-import com.daelim.daelim_hackathon.common.config.dto.UsernameDTO;
+import com.daelim.daelim_hackathon.common.dto.UsernameDTO;
 import com.daelim.daelim_hackathon.chapter.dto.ChapterDTO;
 import com.daelim.daelim_hackathon.chapter.dto.ChapterPageRequestDTO;
 import com.daelim.daelim_hackathon.chapter.service.ChapterService;

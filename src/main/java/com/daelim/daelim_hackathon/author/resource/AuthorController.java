@@ -1,4 +1,4 @@
-package com.daelim.daelim_hackathon.author.api;
+package com.daelim.daelim_hackathon.author.resource;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

@@ -4,8 +4,8 @@ import com.daelim.daelim_hackathon.chapter.domain.Chapter;
 import com.daelim.daelim_hackathon.chapter.dto.ChapterDTO;
 import com.daelim.daelim_hackathon.chapter.dto.ChapterModifyDTO;
 import com.daelim.daelim_hackathon.chapter.dto.ChapterPageRequestDTO;
-import com.daelim.daelim_hackathon.common.config.dto.PageResultDTO;
-import com.daelim.daelim_hackathon.common.config.dto.StatusDTO;
+import com.daelim.daelim_hackathon.common.dto.PageResultDTO;
+import com.daelim.daelim_hackathon.common.dto.StatusDTO;
 import com.daelim.daelim_hackathon.novel.domain.Novel;
 
 public interface ChapterService {
