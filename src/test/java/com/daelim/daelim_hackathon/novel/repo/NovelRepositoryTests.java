@@ -22,6 +22,9 @@ public class NovelRepositoryTests {
     @Autowired
     private PageRepository pageRepository;
 
+    /**
+     * 시작 시 위에서 순서대로 실행하기
+     */
     @Test
     public void 소설_생성() {
         User author;
