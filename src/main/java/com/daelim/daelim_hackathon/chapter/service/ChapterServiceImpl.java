@@ -4,8 +4,8 @@ import com.daelim.daelim_hackathon.chapter.dto.ChapterDTO;
 import com.daelim.daelim_hackathon.chapter.dto.ChapterModifyDTO;
 import com.daelim.daelim_hackathon.chapter.dto.ChapterPageRequestDTO;
 import com.daelim.daelim_hackathon.chapter.repo.ChapterRepository;
-import com.daelim.daelim_hackathon.common.dto.PageResultDTO;
-import com.daelim.daelim_hackathon.common.dto.StatusDTO;
+import com.daelim.daelim_hackathon.common.config.dto.PageResultDTO;
+import com.daelim.daelim_hackathon.common.config.dto.StatusDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -19,12 +19,17 @@ public class ChapterServiceImpl implements ChapterService{
 
     @Override
     public StatusDTO saveChapter(ChapterDTO chapterDTO) {
-        entityToDTO(chapterRepository.save(dtoToEntity(chapterDTO)));
-        return StatusDTO.builder().status("success").build();
+        try {
+            entityToDTO(chapterRepository.save(dtoToEntity(chapterDTO)));
+            return StatusDTO.builder().status("success").build();
+        } catch(Exception e) {
+            throw e;
+        }
     }
 
     @Override
     public ChapterDTO getChapter(Long chapterId) {
+
         return null;
     }
 

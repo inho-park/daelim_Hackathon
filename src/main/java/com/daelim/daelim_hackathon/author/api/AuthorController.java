@@ -17,12 +17,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URI;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -46,10 +44,16 @@ public class AuthorController {
     }
 
 
-    @PostMapping("/user/save")
-    public ResponseEntity<User> saveUser(@RequestBody User user) {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
-        return ResponseEntity.created(uri).body(authorService.saveUser(user));
+    @PostMapping("/join")
+    public ResponseEntity saveUser(@RequestBody User user) {
+        try {
+            return new ResponseEntity<>(authorService.saveUser(user), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/role/save")
@@ -70,6 +74,7 @@ public class AuthorController {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
                 // local 에서 사용할 GrantType 으로 가정하여 Bearer 만 받음
+                // 토큰 값만 자르기
                 String refresh_token = authorizationHeader.substring("Bearer ".length());
                 // token 을 생성할 때 사용한 알고리즘과 일치
                 Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY.getBytes());
@@ -83,7 +88,7 @@ public class AuthorController {
                 User user = authorService.getUser(username);
                 String access_token = JWT.create()
                         .withSubject(user.getUsername())
-                        .withExpiresAt(new Date(System.currentTimeMillis() + 10*60*1000))
+                        .withExpiresAt(new Date(System.currentTimeMillis() + 30*60*1000))
                         .withIssuer(request.getRequestURL().toString())
                         .withClaim("roles", user.getRoles()
                                 .stream()
@@ -97,7 +102,7 @@ public class AuthorController {
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);
             }catch (Exception e) {
                 log.error("Error logging in : {}", e.getMessage());
-                response.setHeader("error", "you\'re monster");
+                response.setHeader("error", "you're monster");
                 response.setStatus(HttpStatus.FORBIDDEN.value());
                 Map<String, String> error = new HashMap<>();
                 error.put("error", e.getMessage());

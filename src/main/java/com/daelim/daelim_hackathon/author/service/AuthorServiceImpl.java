@@ -2,6 +2,7 @@ package com.daelim.daelim_hackathon.author.service;
 
 import com.daelim.daelim_hackathon.author.domain.Role;
 import com.daelim.daelim_hackathon.author.domain.User;
+import com.daelim.daelim_hackathon.author.dto.LoginDTO;
 import com.daelim.daelim_hackathon.author.repo.RoleRepository;
 import com.daelim.daelim_hackathon.author.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -51,14 +52,19 @@ public class AuthorServiceImpl implements AuthorService, UserDetailsService {
     }
 
     @Override
-    public User saveUser(User user) {
-        user = User.builder()
-                .name(user.getName())
-                .username(user.getUsername())
-                .password(passwordEncoder.encode(user.getPassword()))
-                .roles(user.getRoles())
-                .build();
-        return userRepository.save(user);
+    public LoginDTO saveUser(User user) {
+        if(userRepository.existsByUsername(user.getUsername())) {
+            throw new RuntimeException("username is existed");
+        } else {
+            user = User.builder()
+                    .name(user.getName())
+                    .username(user.getUsername())
+                    .password(passwordEncoder.encode(user.getPassword()))
+                    .roles(user.getRoles())
+                    .build();
+            userRepository.save(user);
+            return LoginDTO.builder().username(user.getUsername()).build();
+        }
     }
 
     @Override
