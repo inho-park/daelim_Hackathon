@@ -1,5 +1,6 @@
 package com.daelim.daelim_hackathon.chapter.service;
 
+import com.daelim.daelim_hackathon.chapter.domain.Chapter;
 import com.daelim.daelim_hackathon.chapter.dto.ChapterDTO;
 import com.daelim.daelim_hackathon.chapter.dto.ChapterModifyDTO;
 import com.daelim.daelim_hackathon.chapter.dto.ChapterPageRequestDTO;
@@ -9,6 +10,8 @@ import com.daelim.daelim_hackathon.common.config.dto.StatusDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Log4j2
 @Service
@@ -29,8 +32,22 @@ public class ChapterServiceImpl implements ChapterService{
 
     @Override
     public ChapterDTO getChapter(Long chapterId) {
+        Optional<Chapter> chapter = chapterRepository.findById(chapterId);
+        if (chapter.isPresent()) {
+            return entityToDTO(chapter.get());
+        } else {
+            throw new RuntimeException("chapter isn't exist");
+        }
+    }
 
-        return null;
+    @Override
+    public ChapterDTO getNextChapter(Long prevId) {
+        Optional<Chapter> chapter = chapterRepository.findByPrevChapter_Id(prevId);
+        if (chapter.isPresent()) {
+            return entityToDTO(chapter.get());
+        } else {
+            throw new RuntimeException("next chapter isn't exist");
+        }
     }
 
     @Override
@@ -47,4 +64,5 @@ public class ChapterServiceImpl implements ChapterService{
     public StatusDTO updateChapter(Long chapterId, ChapterModifyDTO modifyDTO) {
         return null;
     }
+
 }

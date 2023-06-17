@@ -14,6 +14,7 @@ public interface ChapterService {
     PageResultDTO<ChapterDTO, Object[]> getChapters(ChapterPageRequestDTO pageRequestDTO);
     StatusDTO deleteChapter(Long chapterId, String username);
     StatusDTO updateChapter(Long chapterId, ChapterModifyDTO modifyDTO);
+    ChapterDTO getNextChapter(Long prevId);
 
     default Chapter dtoToEntity(ChapterDTO dto) {
 

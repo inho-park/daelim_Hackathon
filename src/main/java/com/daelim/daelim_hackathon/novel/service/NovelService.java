@@ -2,11 +2,11 @@ package com.daelim.daelim_hackathon.novel.service;
 
 import com.daelim.daelim_hackathon.author.domain.User;
 import com.daelim.daelim_hackathon.novel.dto.NovelPageRequestDTO;
-import com.daelim.daelim_hackathon.common.dto.PageResultDTO;
+import com.daelim.daelim_hackathon.common.config.dto.PageResultDTO;
 import com.daelim.daelim_hackathon.novel.domain.Novel;
 import com.daelim.daelim_hackathon.novel.dto.NovelModifyDTO;
 import com.daelim.daelim_hackathon.novel.dto.NovelDTO;
-import com.daelim.daelim_hackathon.common.dto.StatusDTO;
+import com.daelim.daelim_hackathon.common.config.dto.StatusDTO;
 
 public interface NovelService {
     StatusDTO saveNovel(NovelDTO novelDTO);

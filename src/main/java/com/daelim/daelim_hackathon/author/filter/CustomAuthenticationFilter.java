@@ -67,7 +67,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         String access_token = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 10*60*1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 30*60*1000))
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("roles", user.getAuthorities()
                         .stream()
@@ -76,12 +76,10 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         String refresh_token = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 24*10*60*1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 3*60*60*1000))
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
 
-//        response.setHeader("access_token", access_token);
-//        response.setHeader("refresh_token", refresh_token);
         // response header 에 담으면 보안에 취약하므로 바디에 담아서 보내기
         Map<String, String> tokens = new HashMap<>();
         tokens.put("access_token", access_token);

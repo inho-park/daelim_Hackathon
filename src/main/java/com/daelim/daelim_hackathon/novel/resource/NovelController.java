@@ -1,6 +1,6 @@
 package com.daelim.daelim_hackathon.novel.resource;
 
-import com.daelim.daelim_hackathon.common.dto.UsernameDTO;
+import com.daelim.daelim_hackathon.common.config.dto.UsernameDTO;
 import com.daelim.daelim_hackathon.drawing.dto.FileNameDTO;
 import com.daelim.daelim_hackathon.drawing.dto.StringDTO;
 import com.daelim.daelim_hackathon.drawing.service.AwsS3Service;
