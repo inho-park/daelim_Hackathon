@@ -1,5 +1,6 @@
 package com.daelim.daelim_hackathon.novel.resource;
 
+import com.daelim.daelim_hackathon.chapter.service.ChapterService;
 import com.daelim.daelim_hackathon.common.dto.UsernameDTO;
 import com.daelim.daelim_hackathon.drawing.dto.FileNameDTO;
 import com.daelim.daelim_hackathon.drawing.dto.StringDTO;
@@ -9,15 +10,18 @@ import com.daelim.daelim_hackathon.novel.dto.NovelModifyDTO;
 import com.daelim.daelim_hackathon.novel.dto.NovelDTO;
 import com.daelim.daelim_hackathon.novel.dto.NovelPageRequestDTO;
 import com.daelim.daelim_hackathon.novel.service.NovelService;
+import com.daelim.daelim_hackathon.page.service.PageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Log4j2
+@Transactional
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/novels")
@@ -25,8 +29,8 @@ public class NovelController {
     private final NovelService novelService;
     private final AwsS3Service awsS3Service;
     private final PapagoService papagoService;
-
-
+    private final ChapterService chapterService;
+    private final PageService pageService;
     /**
      *
      * @param stringDTO
@@ -84,8 +88,19 @@ public class NovelController {
     @DeleteMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity delete(@PathVariable(value = "id") String id, @RequestBody UsernameDTO usernameDTO) {
         try {
+            awsS3Service.deleteFile(novelService.deleteFile(Long.parseLong(id)));
             return new ResponseEntity<>(novelService.deleteNovel(Long.parseLong(id), usernameDTO.getUsername()), HttpStatus.OK);
         }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping(value = "/love/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity addLike(@PathVariable(value = "id") String id) {
+        try {
+            return new ResponseEntity<>(novelService.love(Long.parseLong(id)), HttpStatus.OK);
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -102,7 +117,6 @@ public class NovelController {
             @PathVariable("id") String id
     ) {
         try {
-            awsS3Service.uploadFile(multipartFile);
             return new ResponseEntity<>(
                     FileNameDTO.builder().fileName(awsS3Service.saveNovelDrawing(
                             Long.parseLong(id),
@@ -130,4 +144,6 @@ public class NovelController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+
 }

@@ -101,19 +101,39 @@ public class NovelServiceImpl implements NovelService{
 
     @Override
     public StatusDTO updateNovel(Long novelId, NovelModifyDTO modifyDTO) {
-        Optional<User> userOptional = userRepository.findByUsername(modifyDTO.getUsername());
-        if(userOptional.isPresent()) {
+        try {
             Novel novel = novelRepository.getReferenceById(novelId);
             novel.changeTitle(modifyDTO.getTitle());
             novelRepository.save(novel);
             return StatusDTO.builder().status("success").build();
-        } else {
-            throw new RuntimeException("This account doesn't exist");
+        } catch(Exception e) {
+            throw e;
         }
+    }
+
+    @Override
+    public StatusDTO love(Long novelId) {
+        try {
+            Novel novel = novelRepository.getReferenceById(novelId);
+            Long result = novel.getLove() + 1;
+            novel.addLove(result);
+            novelRepository.save(novel);
+            return StatusDTO.builder().status("success").build();
+        } catch(Exception e) {
+            throw e;
+        }
+
     }
 
     @Override
     public String getFileName(Long novelId) {
         return novelDrawingRepository.findByNovel_Id(novelId).getUuid();
+    }
+
+    @Override
+    public String deleteFile(Long novelId) {
+        String uuid = novelDrawingRepository.findByNovel_Id(novelId).getUuid();
+        novelDrawingRepository.deleteNovelDrawingByNovel_Id(novelId);
+        return uuid;
     }
 }
