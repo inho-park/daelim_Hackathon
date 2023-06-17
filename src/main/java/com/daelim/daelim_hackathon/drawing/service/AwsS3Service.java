@@ -37,6 +37,7 @@ public class AwsS3Service {
     private final PageDrawingRepository pageDrawingRepository;
 
     /**
+     * Novel 전용 그림 테이블 등록
      *
      * @param id
      * @param multipartFile
@@ -57,6 +58,13 @@ public class AwsS3Service {
         return fileName;
     }
 
+    /**
+     * Page 전용 그림 테이블 등록
+     *
+     * @param id
+     * @param multipartFile
+     * @return fileName
+     */
     public String savePageDrawing(Long id, MultipartFile multipartFile) {
         String fileName = uploadFile(multipartFile);
         pageDrawingRepository.save(
@@ -72,6 +80,12 @@ public class AwsS3Service {
         return fileName;
     }
 
+    /**
+     * 해당 multipartFile 을 S3 에 저장
+     * 
+     * @param multipartFile
+     * @return fileName
+     */
     public String uploadFile(MultipartFile multipartFile) {
 
         String fileName = createFileName(multipartFile.getOriginalFilename());

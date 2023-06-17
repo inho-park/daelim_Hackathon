@@ -26,6 +26,7 @@ public class NovelController {
     private final AwsS3Service awsS3Service;
     private final PapagoService papagoService;
 
+
     /**
      *
      * @param stringDTO
@@ -110,6 +111,21 @@ public class NovelController {
                     HttpStatus.OK
             );
         } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/drawing/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getFile(@PathVariable("id") String id) {
+        try {
+            return new ResponseEntity<>(
+                    FileNameDTO.builder().fileName(novelService.getFileName(
+                            Long.parseLong(id)
+                    )).build(),
+                    HttpStatus.OK
+            );
+        } catch(Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

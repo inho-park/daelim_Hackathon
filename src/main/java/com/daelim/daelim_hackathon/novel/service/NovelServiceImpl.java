@@ -2,6 +2,7 @@ package com.daelim.daelim_hackathon.novel.service;
 
 import com.daelim.daelim_hackathon.author.domain.User;
 import com.daelim.daelim_hackathon.author.repo.UserRepository;
+import com.daelim.daelim_hackathon.drawing.repo.NovelDrawingRepository;
 import com.daelim.daelim_hackathon.novel.dto.NovelPageRequestDTO;
 import com.daelim.daelim_hackathon.common.dto.PageResultDTO;
 import com.daelim.daelim_hackathon.novel.domain.Novel;
@@ -24,6 +25,7 @@ import java.util.function.Function;
 public class NovelServiceImpl implements NovelService{
     private final UserRepository userRepository;
     private final NovelRepository novelRepository;
+    private final NovelDrawingRepository novelDrawingRepository;
 
     @Override
     public StatusDTO saveNovel(NovelDTO novelDTO) {
@@ -108,5 +110,10 @@ public class NovelServiceImpl implements NovelService{
         } else {
             throw new RuntimeException("This account doesn't exist");
         }
+    }
+
+    @Override
+    public String getFileName(Long novelId) {
+        return novelDrawingRepository.findByNovel_Id(novelId).getUuid();
     }
 }

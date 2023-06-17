@@ -14,6 +14,7 @@ public interface NovelService {
     PageResultDTO<NovelDTO, Object[]> getNovels(NovelPageRequestDTO pageRequestDTO);
     StatusDTO deleteNovel(Long novelId, String username);
     StatusDTO updateNovel(Long novelId, NovelModifyDTO modifyDTO);
+    String getFileName(Long novelId);
 
     default Novel dtoToEntity(NovelDTO dto, User author) {
         Novel novel = Novel.builder()
