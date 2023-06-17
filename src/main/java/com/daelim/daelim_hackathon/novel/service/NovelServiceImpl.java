@@ -53,8 +53,11 @@ public class NovelServiceImpl implements NovelService{
         } else {
             throw new RuntimeException("Not found this novel");
         }
-
-        return entityToDTO(novel, author);
+        if (author.getUsername().equals(novel.getAuthor().getUsername())) {
+            return entityToDTO(novel, author);
+        } else {
+            throw new RuntimeException("this account doesn't matched novels");
+        }
     }
 
     @Override

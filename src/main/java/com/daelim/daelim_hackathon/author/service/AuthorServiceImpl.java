@@ -55,6 +55,8 @@ public class AuthorServiceImpl implements AuthorService, UserDetailsService {
     public LoginDTO saveUser(User user) {
         if(userRepository.existsByUsername(user.getUsername())) {
             throw new RuntimeException("username is existed");
+        } else if(!userRepository.existsByName(user.getName())) {
+            throw new RuntimeException("name is existed");
         } else {
             user = User.builder()
                     .name(user.getName())
@@ -63,6 +65,7 @@ public class AuthorServiceImpl implements AuthorService, UserDetailsService {
                     .roles(user.getRoles())
                     .build();
             userRepository.save(user);
+            addRoleToUser(user.getUsername(), "ROLE_USER");
             return LoginDTO.builder().username(user.getUsername()).build();
         }
     }

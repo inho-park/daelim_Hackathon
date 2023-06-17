@@ -64,7 +64,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Ex) permitAll() -> hasAuthority("ROLE_USER") -> hasAuthority("ROLE_ADMIN")
         http.authorizeRequests()
                 // 권한이나 인증 없이 permit 해줌
-                .antMatchers("/authors/login/**", "/authors/token/refresh/**").permitAll()
+                .antMatchers("/authors/login/**",
+                        "/authors/token/refresh/**",
+                        "/authors/join/**").permitAll()
                 .antMatchers("/upload/**").hasAuthority("ROLE_USER")
                 .antMatchers("/novels/**").hasAuthority("ROLE_USER")
                 .antMatchers("/chapters/**").hasAuthority("ROLE_USER")

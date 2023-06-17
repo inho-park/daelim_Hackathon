@@ -38,7 +38,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     // local 에서 사용할 GrantType 으로 가정하여 Bearer 만 받음
                     String token = authorizationHeader.substring("Bearer ".length());
                     // token 을 생성할 때 사용한 알고리즘과 일치
-                    log.info("SECRET_KEY : " + SECRET_KEY);
                     Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY.getBytes());
                     // 토큰 검증 객체를 생성한 후 알고리즘 주기
                     JWTVerifier verifier = JWT.require(algorithm).build();
@@ -50,7 +49,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
 
                     // 권한 확인용 출력
-                    for (String role : roles) log.info(role);
+//                    for (String role : roles) log.info(role);
 
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
                     Arrays.stream(roles).forEach(role -> {

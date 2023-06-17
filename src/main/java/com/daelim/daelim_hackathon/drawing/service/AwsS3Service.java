@@ -6,9 +6,11 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.daelim.daelim_hackathon.drawing.domain.NovelDrawing;
+import com.daelim.daelim_hackathon.drawing.domain.PageDrawing;
 import com.daelim.daelim_hackathon.drawing.repo.NovelDrawingRepository;
 import com.daelim.daelim_hackathon.drawing.repo.PageDrawingRepository;
 import com.daelim.daelim_hackathon.novel.domain.Novel;
+import com.daelim.daelim_hackathon.page.domain.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,6 +49,21 @@ public class AwsS3Service {
                         .uuid(fileName)
                         .novel(
                                 Novel.builder()
+                                        .id(id)
+                                        .build()
+                        )
+                        .build()
+        );
+        return fileName;
+    }
+
+    public String savePageDrawing(Long id, MultipartFile multipartFile) {
+        String fileName = uploadFile(multipartFile);
+        pageDrawingRepository.save(
+                PageDrawing.builder()
+                        .uuid(fileName)
+                        .page(
+                                Page.builder()
                                         .id(id)
                                         .build()
                         )
