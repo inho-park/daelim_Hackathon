@@ -12,7 +12,7 @@ public interface ChapterService {
     StatusDTO saveChapter(ChapterDTO chapterDTO);
     ChapterDTO getChapter(Long chapterId);
     PageResultDTO<ChapterDTO, Object[]> getChapters(ChapterPageRequestDTO pageRequestDTO);
-    StatusDTO deleteChapter(Long chapterId, String username);
+    StatusDTO deleteChapter(Long chapterId);
     StatusDTO updateChapter(Long chapterId, ChapterModifyDTO modifyDTO);
     ChapterDTO getNextChapter(Long prevId);
 

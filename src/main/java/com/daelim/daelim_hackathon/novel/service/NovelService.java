@@ -14,7 +14,7 @@ public interface NovelService {
     PageResultDTO<NovelDTO, Object[]> getNovels(NovelPageRequestDTO pageRequestDTO);
     StatusDTO deleteNovel(Long novelId, String username);
     StatusDTO updateNovel(Long novelId, NovelModifyDTO modifyDTO);
-    StatusDTO love(Long novelId);
+    StatusDTO love(Long novelId, String username);
     String getFileName(Long novelId);
     String deleteFile(Long novelId);
 
@@ -22,6 +22,7 @@ public interface NovelService {
         Novel novel = Novel.builder()
                 .title(dto.getTitle())
                 .author(author)
+                .love(0L)
                 .build();
         return novel;
     }
@@ -33,7 +34,7 @@ public interface NovelService {
                 .modDate(novel.getModDate())
                 .love(novel.getLove())
                 .title(novel.getTitle())
-                .username(author.getUsername())
+                .name(author.getName())
                 .build();
         return novelDTO;
     }

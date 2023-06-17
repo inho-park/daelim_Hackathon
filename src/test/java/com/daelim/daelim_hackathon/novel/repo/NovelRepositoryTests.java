@@ -30,12 +30,15 @@ public class NovelRepositoryTests {
         User author;
         for (int i = 1; i < 11; i++) {
             author = userRepository.findByUsername("username" + i).get();
-            novelRepository.save(
-                    Novel.builder()
-                            .author(author)
-                            .title("title" + i)
-                            .build()
-            );
+            for (int j = 1; j < 11; j++) {
+                novelRepository.save(
+                        Novel.builder()
+                                .author(author)
+                                .love(0l)
+                                .title("author" + i + "  title" + j)
+                                .build()
+                );
+            }
         }
     }
 
@@ -47,7 +50,7 @@ public class NovelRepositoryTests {
             for (int j = 1; j < 11; j++) {
                 chapterRepository.save(
                         Chapter.builder()
-                                .chapterName("chapter" + j)
+                                .chapterName("novel" + i + "  chapter" + j)
                                 .totalPages(j)
                                 .novel(novel)
                                 .build()
@@ -64,8 +67,6 @@ public class NovelRepositoryTests {
             prevChapter = chapterRepository.getReferenceById(i - 1);
             result[(int) (i-2)] = chapterRepository.modifyPrevChapter(i, prevChapter);
         }
-
-        for (int id : result) System.out.println(id);
     }
 
     @Test
@@ -83,7 +84,7 @@ public class NovelRepositoryTests {
                 pageRepository.save(
                         Page.builder()
                                 .isImage(false)
-                                .content("content" + i)
+                                .content("chapter" + i + "  page" + j)
                                 .chapter(chapter)
                                 .build()
                 );

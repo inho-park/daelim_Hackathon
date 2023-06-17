@@ -14,7 +14,8 @@ public class NovelPageRequestDTO {
 
     private int page;
     private int size;
-    private String username;
+    private String name;
+    private Boolean isMine;
 
     public NovelPageRequestDTO() {
         this.page = 1;

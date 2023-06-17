@@ -56,7 +56,7 @@ public class ChapterServiceImpl implements ChapterService{
     }
 
     @Override
-    public StatusDTO deleteChapter(Long chapterId, String username) {
+    public StatusDTO deleteChapter(Long chapterId) {
         return null;
     }
 

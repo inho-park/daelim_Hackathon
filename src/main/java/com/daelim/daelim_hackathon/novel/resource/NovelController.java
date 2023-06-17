@@ -1,7 +1,7 @@
 package com.daelim.daelim_hackathon.novel.resource;
 
 import com.daelim.daelim_hackathon.chapter.service.ChapterService;
-import com.daelim.daelim_hackathon.common.dto.UsernameDTO;
+import com.daelim.daelim_hackathon.common.dto.NameDTO;
 import com.daelim.daelim_hackathon.drawing.dto.FileNameDTO;
 import com.daelim.daelim_hackathon.drawing.dto.StringDTO;
 import com.daelim.daelim_hackathon.drawing.service.AwsS3Service;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Log4j2
-@Transactional
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/novels")
@@ -32,7 +31,8 @@ public class NovelController {
     private final ChapterService chapterService;
     private final PageService pageService;
     /**
-     *
+     * 한글 영어로 번역
+     * 
      * @param stringDTO
      * @return stringDTO(string = 영어로 번역된 문자열)
      */
@@ -45,6 +45,12 @@ public class NovelController {
         }
     }
 
+    /**
+     * 내 소설 리스트 혹은, 내가 좋아요 누른 소설 리스트 불러오기
+     *
+     * @param pageRequestDTO
+     * @return pageResultDTO
+     */
     @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getList(@RequestBody NovelPageRequestDTO pageRequestDTO) {
         try {
@@ -55,6 +61,12 @@ public class NovelController {
         }
     }
 
+    /**
+     * 소설 생성하기
+     *
+     * @param dto
+     * @return StatusDTO
+     */
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity create(@RequestBody NovelDTO dto) {
         try {
@@ -65,16 +77,30 @@ public class NovelController {
         }
     }
 
+    /**
+     * 소설 불러오기
+     *
+     * @param id
+     * @param nameDTO
+     * @return novelDTO
+     */
     @GetMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity read(@PathVariable(value = "id") String id, @RequestBody UsernameDTO usernameDTO) {
+    public ResponseEntity read(@PathVariable(value = "id") String id, @RequestBody NameDTO nameDTO) {
         try {
-            return new ResponseEntity<>(novelService.getNovel(Long.parseLong(id), usernameDTO.getUsername()), HttpStatus.OK);
+            return new ResponseEntity<>(novelService.getNovel(Long.parseLong(id), nameDTO.getName()), HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
+    /**
+     * 소설 제목 수정하기
+     *
+     * @param id
+     * @param dto
+     * @return statusDTO
+     */
     @PutMapping(value= "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity modify(@PathVariable(value = "id") String id, @RequestBody NovelModifyDTO dto) {
         try {
@@ -85,21 +111,35 @@ public class NovelController {
         }
     }
 
+    /**
+     * 소설 삭제하기
+     *
+     * @param id
+     * @param nameDTO
+     * @return statusDTO
+     */
     @DeleteMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity delete(@PathVariable(value = "id") String id, @RequestBody UsernameDTO usernameDTO) {
+    public ResponseEntity delete(@PathVariable(value = "id") String id, @RequestBody NameDTO nameDTO) {
         try {
             awsS3Service.deleteFile(novelService.deleteFile(Long.parseLong(id)));
-            return new ResponseEntity<>(novelService.deleteNovel(Long.parseLong(id), usernameDTO.getUsername()), HttpStatus.OK);
+            return new ResponseEntity<>(novelService.deleteNovel(Long.parseLong(id), nameDTO.getName()), HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
+    /**
+     * 좋아요 누르기
+     * 
+     * @param id
+     * @param nameDTO
+     * @return StatusDTO
+     */
     @PutMapping(value = "/love/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity addLike(@PathVariable(value = "id") String id) {
+    public ResponseEntity addLike(@PathVariable(value = "id") String id, @RequestBody NameDTO nameDTO) {
         try {
-            return new ResponseEntity<>(novelService.love(Long.parseLong(id)), HttpStatus.OK);
+            return new ResponseEntity<>(novelService.love(Long.parseLong(id), nameDTO.getName()), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -107,6 +147,8 @@ public class NovelController {
     }
 
     /**
+     * 그림 저장
+     * 
      * 책 표지와 페이지 사이의 그림 table 을 구분 지어서 관리
      * NovelController 에서 s3 service 호출
      * @return 파일 경로에 해당하는 uuid 반환
@@ -130,6 +172,12 @@ public class NovelController {
         }
     }
 
+    /**
+     * 그림 불러오기
+     *
+     * @param id
+     * @return filenameDTO
+     */
     @GetMapping(value = "/drawing/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getFile(@PathVariable("id") String id) {
         try {

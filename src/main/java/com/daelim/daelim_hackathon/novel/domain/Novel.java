@@ -2,17 +2,17 @@ package com.daelim.daelim_hackathon.novel.domain;
 
 import com.daelim.daelim_hackathon.author.domain.User;
 import com.daelim.daelim_hackathon.common.domain.BaseTimeEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @Getter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Novel extends BaseTimeEntity {
@@ -24,7 +24,7 @@ public class Novel extends BaseTimeEntity {
     @Column
     private String title;
 
-    @ColumnDefault("0")
+    @Column
     private Long love;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,7 +34,7 @@ public class Novel extends BaseTimeEntity {
         this.title = title;
     }
 
-    public void addLove(Long result) {
-        love = result;
+    public void changeLove(Long result) {
+        this.love = result;
     }
 }

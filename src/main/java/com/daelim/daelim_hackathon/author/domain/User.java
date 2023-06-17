@@ -1,6 +1,7 @@
 package com.daelim.daelim_hackathon.author.domain;
 
 import com.daelim.daelim_hackathon.common.domain.BaseTimeEntity;
+import com.daelim.daelim_hackathon.novel.domain.Novel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

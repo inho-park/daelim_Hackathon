@@ -1,10 +1,10 @@
 package com.daelim.daelim_hackathon.chapter.resource;
 
 import com.daelim.daelim_hackathon.chapter.dto.ChapterModifyDTO;
-import com.daelim.daelim_hackathon.common.dto.UsernameDTO;
 import com.daelim.daelim_hackathon.chapter.dto.ChapterDTO;
 import com.daelim.daelim_hackathon.chapter.dto.ChapterPageRequestDTO;
 import com.daelim.daelim_hackathon.chapter.service.ChapterService;
+import com.daelim.daelim_hackathon.common.dto.NameDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -60,9 +60,9 @@ public class ChapterController {
     }
 
     @DeleteMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity delete(@PathVariable(value = "id") String id, @RequestBody UsernameDTO usernameDTO) {
+    public ResponseEntity delete(@PathVariable(value = "id") String id) {
         try {
-            return new ResponseEntity<>(chapterService.deleteChapter(Long.parseLong(id), usernameDTO.getUsername()), HttpStatus.OK);
+            return new ResponseEntity<>(chapterService.deleteChapter(Long.parseLong(id)), HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

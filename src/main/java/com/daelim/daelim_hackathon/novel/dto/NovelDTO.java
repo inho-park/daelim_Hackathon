@@ -15,6 +15,6 @@ public class NovelDTO {
     private Long novelId;
     private String title;
     private Long love;
-    private String username;
+    private String name;
     private LocalDateTime regDate,modDate;
 }
