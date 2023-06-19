@@ -32,6 +32,7 @@ public class NovelServiceImpl implements NovelService{
     private final NovelDrawingRepository novelDrawingRepository;
     private final UserNovelRepository userNovelRepository;
 
+
     @Override
     public StatusDTO saveNovel(NovelDTO novelDTO) {
         Optional<User> option = userRepository.findByName(novelDTO.getName());
@@ -43,6 +44,7 @@ public class NovelServiceImpl implements NovelService{
             throw new RuntimeException("This account doesn't exist");
         }
     }
+
 
     @Override
     public NovelDTO getNovel(Long novelId, String name) {
@@ -67,6 +69,7 @@ public class NovelServiceImpl implements NovelService{
         }
     }
 
+
     @Override
     public PageResultDTO<NovelDTO, Object[]> getNovels(NovelPageRequestDTO pageRequestDTO) {
         Function<Object[], NovelDTO> fn = (
@@ -83,7 +86,6 @@ public class NovelServiceImpl implements NovelService{
                     pageRequestDTO.getPageable(Sort.by("id").descending()),
                     userRepository.findByName(name).get().getId()
                 );
-                log.info(userRepository.findByName(name).get().getId());
                 return new PageResultDTO<>(result, fn);
             } else {
                 throw new RuntimeException("No permission");
@@ -101,6 +103,7 @@ public class NovelServiceImpl implements NovelService{
         }
     }
 
+
     @Override
     public StatusDTO deleteNovel(Long novelId, String name) {
         Optional<User> option = userRepository.findByName(name);
@@ -117,16 +120,14 @@ public class NovelServiceImpl implements NovelService{
         }
     }
 
+
     @Override
     public StatusDTO updateNovel(Long novelId, NovelModifyDTO modifyDTO) {
-        try {
-            Novel novel = novelRepository.getReferenceById(novelId);
-            novel.changeTitle(modifyDTO.getTitle());
-            novelRepository.save(novel);
-            return StatusDTO.builder().status("success").build();
-        } catch(Exception e) {
-            throw e;
-        }
+
+        Novel novel = novelRepository.getReferenceById(novelId);
+        novel.changeTitle(modifyDTO.getTitle());
+        novelRepository.save(novel);
+        return StatusDTO.builder().status("success").build();
     }
 
 
@@ -159,10 +160,12 @@ public class NovelServiceImpl implements NovelService{
 
     }
 
+
     @Override
     public String getFileName(Long novelId) {
         return novelDrawingRepository.findByNovel_Id(novelId).getUuid();
     }
+
 
     @Override
     public String deleteFile(Long novelId) {

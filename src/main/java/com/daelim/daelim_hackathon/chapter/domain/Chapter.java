@@ -30,4 +30,8 @@ public class Chapter extends BaseTimeEntity {
 
     @OneToOne
     private Chapter prevChapter;
+
+    public void changeChapterName(String chapterName) {
+        this.chapterName = chapterName;
+    }
 }

@@ -1,5 +1,6 @@
 package com.daelim.daelim_hackathon.chapter.service;
 
+import com.daelim.daelim_hackathon.author.domain.User;
 import com.daelim.daelim_hackathon.chapter.domain.Chapter;
 import com.daelim.daelim_hackathon.chapter.dto.ChapterDTO;
 import com.daelim.daelim_hackathon.chapter.dto.ChapterModifyDTO;
@@ -7,11 +8,17 @@ import com.daelim.daelim_hackathon.chapter.dto.ChapterPageRequestDTO;
 import com.daelim.daelim_hackathon.chapter.repo.ChapterRepository;
 import com.daelim.daelim_hackathon.common.dto.PageResultDTO;
 import com.daelim.daelim_hackathon.common.dto.StatusDTO;
+import com.daelim.daelim_hackathon.novel.domain.Novel;
+import com.daelim.daelim_hackathon.novel.dto.NovelDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 @Log4j2
 @Service
@@ -52,17 +59,47 @@ public class ChapterServiceImpl implements ChapterService{
 
     @Override
     public PageResultDTO<ChapterDTO, Object[]> getChapters(ChapterPageRequestDTO pageRequestDTO) {
-        return null;
+        Function<Object[], ChapterDTO> fn = (
+                entity -> entityToDTO(
+                        (Chapter) entity[0]
+                )
+        );
+        Page<Object[]> result = chapterRepository.getChapterByNovelId(
+                pageRequestDTO.getPageable(Sort.by("id").descending()),
+                pageRequestDTO.getNovelId()
+        );
+
+        return new PageResultDTO<>(result, fn);
     }
 
+    @Transactional
     @Override
     public StatusDTO deleteChapter(Long chapterId) {
-        return null;
+
+        // 다음 챕터가 있다면 해당 챕터의 이전챕터와 이어줘야함
+        Optional<Chapter> nextOptional = chapterRepository.findByPrevChapter_Id(chapterId);
+        if(nextOptional.isPresent()) {
+            Chapter next = nextOptional.get();
+            Chapter prev = chapterRepository.getReferenceById(chapterId).getPrevChapter();
+
+        } else {
+            throw new RuntimeException("해당 id 에 속하는 챕터가 없음");
+        }
+        chapterRepository.delete(chapterRepository.getReferenceById(chapterId));
+        return StatusDTO.builder().status("success").build();
     }
 
     @Override
     public StatusDTO updateChapter(Long chapterId, ChapterModifyDTO modifyDTO) {
-        return null;
+        Optional<Chapter> optional = chapterRepository.findById(chapterId);
+        if(optional.isPresent()) {
+            Chapter chapter = optional.get();
+            chapter.changeChapterName(modifyDTO.getTitle());
+            chapterRepository.save(chapter);
+            return StatusDTO.builder().status("success").build();
+        } else {
+            throw new RuntimeException("해당 id 에 속하는 챕터가 없음");
+        }
     }
 
 }
