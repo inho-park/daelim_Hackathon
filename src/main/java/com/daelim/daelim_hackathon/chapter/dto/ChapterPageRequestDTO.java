@@ -14,7 +14,7 @@ public class ChapterPageRequestDTO {
 
     private int page;
     private int size;
-    private Long novelId;
+    private String novelId;
 
     public ChapterPageRequestDTO() {
         this.page = 1;

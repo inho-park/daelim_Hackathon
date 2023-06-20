@@ -18,28 +18,25 @@ public interface ChapterService {
 
     default Chapter dtoToEntity(ChapterDTO dto) {
 
-        Chapter chapter = Chapter.builder()
+        return Chapter.builder()
                 .chapterName(dto.getChapterName())
                 .totalPages(dto.getTotalPages())
                 .novel(Novel.builder().id(dto.getNovelId()).build())
-                .prevChapter(Chapter.builder().id(dto.getPrevChapterId()).build())
+                .prevChapter(dto.getPrevChapterId())
                 .build();
-
-        return chapter;
 
     }
 
     default ChapterDTO entityToDTO(Chapter chapter) {
-        ChapterDTO chapterDTO = ChapterDTO.builder()
+
+        return ChapterDTO.builder()
                 .chapterId(chapter.getId())
                 .chapterName(chapter.getChapterName())
                 .totalPages(chapter.getTotalPages())
-                .prevChapterId(chapter.getPrevChapter().getId())
+                .prevChapterId(chapter.getPrevChapter())
                 .novelId(chapter.getNovel().getId())
                 .modDate(chapter.getModDate())
                 .regDate(chapter.getRegDate())
                 .build();
-
-        return chapterDTO;
     }
 }

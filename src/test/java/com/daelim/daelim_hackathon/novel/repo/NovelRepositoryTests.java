@@ -61,11 +61,11 @@ public class NovelRepositoryTests {
 
     @Test
     public void 이전_챕터연결() {
-        Chapter prevChapter;
-        int result [] = new int [9];
         for (long i = 2; i < 11; i++) {
-            prevChapter = chapterRepository.getReferenceById(i - 1);
-            result[(int) (i-2)] = chapterRepository.modifyPrevChapter(i, prevChapter);
+            Chapter chapter = chapterRepository.getReferenceById(i);
+            System.out.println(chapter);
+            chapter.changePrevChapter(i - 1);
+            chapterRepository.save(chapter);
         }
     }
 

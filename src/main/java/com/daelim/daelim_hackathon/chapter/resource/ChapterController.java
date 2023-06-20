@@ -4,7 +4,6 @@ import com.daelim.daelim_hackathon.chapter.dto.ChapterModifyDTO;
 import com.daelim.daelim_hackathon.chapter.dto.ChapterDTO;
 import com.daelim.daelim_hackathon.chapter.dto.ChapterPageRequestDTO;
 import com.daelim.daelim_hackathon.chapter.service.ChapterService;
-import com.daelim.daelim_hackathon.common.dto.NameDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;

@@ -13,20 +13,12 @@ import java.util.Optional;
 
 public interface ChapterRepository extends JpaRepository<Chapter, Long> {
 
-    @Modifying
-    @Query(
-            "UPDATE Chapter c " +
-            "SET c.prevChapter =:prevChapter " +
-            "WHERE c.id =:chapterId"
-    )
-    int modifyPrevChapter(@Param("chapterId") Long chapterId ,@Param("prevChapter") Chapter prevChapter);
-
-    Optional<Chapter> findByPrevChapter_Id(Long prevId);
+    Optional<Chapter> findByPrevChapter(Long prevId);
 
     @Query(
             "SELECT c " +
             "FROM Chapter c " +
             "WHERE c.novel.id=:id"
     )
-    Page<Object[]> getChapterByNovelId(Pageable pageable, @Param("id") Long id);
+    Page<Object[]> getChaptersByNovel(Pageable pageable, @Param("id") Long id);
 }

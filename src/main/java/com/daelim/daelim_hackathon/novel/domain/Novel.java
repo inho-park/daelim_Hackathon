@@ -3,7 +3,6 @@ package com.daelim.daelim_hackathon.novel.domain;
 import com.daelim.daelim_hackathon.author.domain.User;
 import com.daelim.daelim_hackathon.common.domain.BaseTimeEntity;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
