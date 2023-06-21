@@ -7,6 +7,8 @@ import com.daelim.daelim_hackathon.chapter.dto.ChapterPageRequestDTO;
 import com.daelim.daelim_hackathon.chapter.repo.ChapterRepository;
 import com.daelim.daelim_hackathon.common.dto.PageResultDTO;
 import com.daelim.daelim_hackathon.common.dto.StatusDTO;
+import com.daelim.daelim_hackathon.novel.domain.Novel;
+import com.daelim.daelim_hackathon.novel.repo.NovelRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -23,11 +25,13 @@ import java.util.function.Function;
 public class ChapterServiceImpl implements ChapterService{
 
     private final ChapterRepository chapterRepository;
+    private final NovelRepository novelRepository;
 
     @Override
     public StatusDTO saveChapter(ChapterDTO chapterDTO) {
         try {
-            entityToDTO(chapterRepository.save(dtoToEntity(chapterDTO)));
+            Novel novel = novelRepository.findById(chapterDTO.getNovelId()).get();
+            entityToDTO(chapterRepository.save(dtoToEntity(chapterDTO)), novel);
             return StatusDTO.builder().status("success").build();
         } catch(Exception e) {
             throw e;
@@ -40,7 +44,7 @@ public class ChapterServiceImpl implements ChapterService{
         Chapter chapter;
         if (optional.isPresent()) {
             chapter = optional.get();
-            return entityToDTO(optional.get());
+            return entityToDTO(optional.get(), chapter.getNovel());
         } else {
             throw new RuntimeException("chapter isn't exist");
         }
@@ -48,9 +52,11 @@ public class ChapterServiceImpl implements ChapterService{
 
     @Override
     public ChapterDTO getNextChapter(Long prevId) {
-        Optional<Chapter> chapter = chapterRepository.findByPrevChapter(prevId);
-        if (chapter.isPresent()) {
-            return entityToDTO(chapter.get());
+        Optional<Chapter> optional = chapterRepository.findByPrevChapter(prevId);
+        Chapter chapter;
+        if (optional.isPresent()) {
+            chapter = optional.get();
+            return entityToDTO(chapter, chapter.getNovel());
         } else {
             throw new RuntimeException("next chapter isn't exist");
         }
@@ -60,10 +66,11 @@ public class ChapterServiceImpl implements ChapterService{
     public PageResultDTO<ChapterDTO, Object[]> getChapters(ChapterPageRequestDTO pageRequestDTO) {
         Function<Object[], ChapterDTO> fn = (
                 entity -> entityToDTO(
-                        (Chapter) entity[0]
+                        (Chapter) entity[0],
+                        (Novel) entity[1]
                 )
         );
-        Page<Object[]> result = chapterRepository.getChaptersByNovel(
+        Page<Object[]> result = chapterRepository.getChaptersByNovel_Id(
                 pageRequestDTO.getPageable(Sort.by("id").descending()),
                 Long.parseLong(pageRequestDTO.getNovelId())
         );

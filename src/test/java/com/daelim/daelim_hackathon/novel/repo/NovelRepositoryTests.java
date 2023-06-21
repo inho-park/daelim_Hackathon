@@ -62,7 +62,7 @@ public class NovelRepositoryTests {
     @Test
     public void 이전_챕터연결() {
         for (long i = 2; i < 11; i++) {
-            Chapter chapter = chapterRepository.getReferenceById(i);
+            Chapter chapter = chapterRepository.findById(i).orElse(null);
             System.out.println(chapter);
             chapter.changePrevChapter(i - 1);
             chapterRepository.save(chapter);
@@ -97,7 +97,7 @@ public class NovelRepositoryTests {
         Page prev;
         int result [] = new int [9];
         for (long i = 2; i < 11; i++) {
-            prev = pageRepository.getReferenceById(i - 1);
+            prev = pageRepository.findById(i - 1).orElse(null);
             result[(int) (i-2)] = pageRepository.modifyPrevPage(i, prev);
         }
     }

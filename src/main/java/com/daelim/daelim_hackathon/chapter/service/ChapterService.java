@@ -27,14 +27,14 @@ public interface ChapterService {
 
     }
 
-    default ChapterDTO entityToDTO(Chapter chapter) {
+    default ChapterDTO entityToDTO(Chapter chapter, Novel novel) {
 
         return ChapterDTO.builder()
                 .chapterId(chapter.getId())
                 .chapterName(chapter.getChapterName())
                 .totalPages(chapter.getTotalPages())
                 .prevChapterId(chapter.getPrevChapter())
-                .novelId(chapter.getNovel().getId())
+                .novelId(novel.getId())
                 .modDate(chapter.getModDate())
                 .regDate(chapter.getRegDate())
                 .build();

@@ -13,6 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Chapter extends BaseTimeEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,9 +27,9 @@ public class Chapter extends BaseTimeEntity {
     @Builder.Default
     private Long prevChapter = -1L;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     private Novel novel;
+
 
     public void changeChapterName(String chapterName) {
         this.chapterName = chapterName;

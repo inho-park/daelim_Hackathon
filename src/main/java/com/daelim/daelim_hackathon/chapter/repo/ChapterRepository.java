@@ -16,9 +16,9 @@ public interface ChapterRepository extends JpaRepository<Chapter, Long> {
     Optional<Chapter> findByPrevChapter(Long prevId);
 
     @Query(
-            "SELECT c " +
+            "SELECT c, c.novel " +
             "FROM Chapter c " +
             "WHERE c.novel.id=:id"
     )
-    Page<Object[]> getChaptersByNovel(Pageable pageable, @Param("id") Long id);
+    Page<Object[]> getChaptersByNovel_Id(Pageable pageable, @Param("id") Long id);
 }
