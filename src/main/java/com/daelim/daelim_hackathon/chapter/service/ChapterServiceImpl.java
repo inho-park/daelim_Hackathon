@@ -91,7 +91,7 @@ public class ChapterServiceImpl implements ChapterService{
             next.changePrevChapter(prev);
             chapterRepository.save(next);
         } else {
-            throw new RuntimeException("해당 id 에 속하는 챕터가 없음");
+            chapterRepository.delete(chapterRepository.getReferenceById(chapterId));
         }
         return StatusDTO.builder().status("success").build();
     }

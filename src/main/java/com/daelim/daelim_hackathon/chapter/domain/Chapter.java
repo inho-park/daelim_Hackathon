@@ -23,9 +23,8 @@ public class Chapter extends BaseTimeEntity {
 
     @Column
     private int totalPages;
-    @Column
-    @Builder.Default
-    private Long prevChapter = -1L;
+    @Column(unique = true)
+    private Long prevChapter;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Novel novel;

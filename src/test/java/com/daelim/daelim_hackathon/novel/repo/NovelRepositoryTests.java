@@ -29,12 +29,12 @@ public class NovelRepositoryTests {
     public void 소설_생성() {
         User author;
         for (int i = 1; i < 11; i++) {
-            author = userRepository.findByUsername("username" + i).get();
+            author = userRepository.findByUsername("username" + i).orElse(null);
             for (int j = 1; j < 11; j++) {
                 novelRepository.save(
                         Novel.builder()
                                 .author(author)
-                                .love(0l)
+                                .love(0L)
                                 .title("author" + i + "  title" + j)
                                 .build()
                 );
@@ -47,25 +47,27 @@ public class NovelRepositoryTests {
         Novel novel;
         for (long i = 1; i < 11; i++) {
             novel = novelRepository.getReferenceById(i);
-            for (int j = 1; j < 11; j++) {
-                chapterRepository.save(
-                        Chapter.builder()
-                                .chapterName("novel" + i + "  chapter" + j)
-                                .totalPages(j)
-                                .novel(novel)
-                                .build()
-                );
+            for (long j = 1; j < 11; j++) {
+                if (i == 1 && j >= 2) {
+                    chapterRepository.save(
+                            Chapter.builder()
+                                    .chapterName("novel" + i + "  chapter" + j)
+                                    .totalPages((int)j)
+                                    .prevChapter(j - 1)
+                                    .novel(novel)
+                                    .build()
+                    );
+                }
+                else {
+                    chapterRepository.save(
+                            Chapter.builder()
+                                    .chapterName("novel" + i + "  chapter" + j)
+                                    .totalPages((int)j)
+                                    .novel(novel)
+                                    .build()
+                    );
+                }
             }
-        }
-    }
-
-    @Test
-    public void 이전_챕터연결() {
-        for (long i = 2; i < 11; i++) {
-            Chapter chapter = chapterRepository.findById(i).orElse(null);
-            System.out.println(chapter);
-            chapter.changePrevChapter(i - 1);
-            chapterRepository.save(chapter);
         }
     }
 
