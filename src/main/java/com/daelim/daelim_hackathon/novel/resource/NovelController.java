@@ -36,8 +36,8 @@ public class NovelController {
      * @param stringDTO
      * @return stringDTO(string = 영어로 번역된 문자열)
      */
-    @PostMapping(value = "/translate", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getEn(@RequestBody StringDTO stringDTO) {
+    @PostMapping(value = "/translate")
+    public ResponseEntity getEn(@ModelAttribute StringDTO stringDTO) {
         try {
             return ResponseEntity.ok().body(papagoService.koToEn(stringDTO.getString()));
         } catch(Exception e) {
@@ -51,8 +51,8 @@ public class NovelController {
      * @param pageRequestDTO
      * @return pageResultDTO
      */
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getList(@RequestBody NovelPageRequestDTO pageRequestDTO) {
+    @GetMapping()
+    public ResponseEntity getList(@ModelAttribute NovelPageRequestDTO pageRequestDTO) {
         try {
             return new ResponseEntity<>(novelService.getNovels(pageRequestDTO), HttpStatus.OK);
         }catch (Exception e) {
@@ -84,8 +84,8 @@ public class NovelController {
      * @param nameDTO
      * @return novelDTO
      */
-    @GetMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity read(@PathVariable(value = "id") String id, @RequestBody NameDTO nameDTO) {
+    @GetMapping(value = "/{id}")
+    public ResponseEntity read(@PathVariable(value = "id") String id, @ModelAttribute NameDTO nameDTO) {
         try {
             return new ResponseEntity<>(novelService.getNovel(Long.parseLong(id), nameDTO.getName()), HttpStatus.OK);
         }catch (Exception e) {
@@ -178,7 +178,7 @@ public class NovelController {
      * @param id
      * @return filenameDTO
      */
-    @GetMapping(value = "/drawing/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/drawing/{id}")
     public ResponseEntity getFile(@PathVariable("id") String id) {
         try {
             return new ResponseEntity<>(

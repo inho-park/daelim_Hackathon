@@ -67,7 +67,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/authors/login/**",
                         "/authors/token/refresh/**",
                         "/authors/join/**").permitAll()
-                .antMatchers("/authors/logout").hasAuthority("ROLE_USER")
                 .antMatchers("/novels/**").hasAuthority("ROLE_USER")
                 .antMatchers("/chapters/**").hasAuthority("ROLE_USER")
                 .antMatchers("/pages/**").hasAuthority("ROLE_USER")
