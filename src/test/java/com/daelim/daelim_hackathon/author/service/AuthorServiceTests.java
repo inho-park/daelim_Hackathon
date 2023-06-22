@@ -2,7 +2,6 @@ package com.daelim.daelim_hackathon.author.service;
 
 import com.daelim.daelim_hackathon.author.domain.Role;
 import com.daelim.daelim_hackathon.author.domain.User;
-import com.daelim.daelim_hackathon.author.service.AuthorService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

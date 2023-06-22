@@ -18,8 +18,6 @@ public interface UserNovelRepository extends JpaRepository<UserNovel, Long> {
     )
     Page<Object[]> getUserNovelsByUser_Id(Pageable pageable, @Param("id") Long id);
 
-    boolean existsByUser_IdAndNovel_Id(Long userId, Long novelId);
-
     Optional<UserNovel> findByUserIdAndNovelId(Long userId, Long novelId);
 
 }

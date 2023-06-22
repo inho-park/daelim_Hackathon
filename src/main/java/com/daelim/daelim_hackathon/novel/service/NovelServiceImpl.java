@@ -80,6 +80,21 @@ public class NovelServiceImpl implements NovelService{
         );
         Page<Object[]> result;
         String name = pageRequestDTO.getName();
+        if(name == null) {
+            if (pageRequestDTO.getIsBest()) {
+                result = novelRepository.getNovelsByPublic(
+                        pageRequestDTO.getPageable(Sort.by("love").descending()),
+                        true
+                );
+                return new PageResultDTO<>(result, fn);
+            } else {
+                result = novelRepository.getNovelsByPublic(
+                        pageRequestDTO.getPageable(Sort.by("id").descending()),
+                        true
+                );
+                return new PageResultDTO<>(result, fn);
+            }
+        }
         if (pageRequestDTO.getIsMine()) {
             if (userRepository.existsByName(name)) {
                 result = novelRepository.getNovelsByAuthor(

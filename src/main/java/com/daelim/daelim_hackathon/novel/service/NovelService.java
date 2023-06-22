@@ -23,6 +23,8 @@ public interface NovelService {
                 .title(dto.getTitle())
                 .author(author)
                 .love(0L)
+                .isPublic(dto.isPublic())
+                .genre(dto.getGenre())
                 .build();
         return novel;
     }
@@ -33,6 +35,8 @@ public interface NovelService {
                 .regDate(novel.getRegDate())
                 .modDate(novel.getModDate())
                 .love(novel.getLove())
+                .isPublic(novel.isPublic())
+                .genre(novel.getGenre())
                 .title(novel.getTitle())
                 .name(author.getName())
                 .build();

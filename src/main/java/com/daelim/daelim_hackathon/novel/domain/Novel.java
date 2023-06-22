@@ -2,6 +2,7 @@ package com.daelim.daelim_hackathon.novel.domain;
 
 import com.daelim.daelim_hackathon.author.domain.User;
 import com.daelim.daelim_hackathon.common.domain.BaseTimeEntity;
+import com.daelim.daelim_hackathon.common.domain.BooleanToYNConverter;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,11 +19,18 @@ public class Novel extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(length = 30, nullable = false)
     private String title;
 
     @Column
     private Long love;
+
+    @Column(length = 20, nullable = false)
+    private String genre;
+
+    @Column
+    @Convert(converter = BooleanToYNConverter.class)
+    private boolean isPublic;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User author;

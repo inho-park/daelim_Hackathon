@@ -16,5 +16,7 @@ public class NovelDTO {
     private String title;
     private Long love;
     private String name;
+    private String genre;
+    private boolean isPublic;
     private LocalDateTime regDate,modDate;
 }

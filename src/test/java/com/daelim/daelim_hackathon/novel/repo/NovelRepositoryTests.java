@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Random;
+
 @SpringBootTest
 public class NovelRepositoryTests {
     @Autowired
@@ -27,14 +29,26 @@ public class NovelRepositoryTests {
      */
     @Test
     public void 소설_생성() {
+        String [] genre = {"공포", "쓰릴러", "추리", "코미디", "과학", "판타지", "무협", "로맨스"};
         User author;
         for (int i = 1; i < 11; i++) {
             author = userRepository.findByUsername("username" + i).orElse(null);
             for (int j = 1; j < 11; j++) {
-                novelRepository.save(
+                if (j%2 == 0) novelRepository.save(
                         Novel.builder()
                                 .author(author)
+                                .isPublic(true)
                                 .love(0L)
+                                .genre(genre[(int) (Math.random() * 7)])
+                                .title("author" + i + "  title" + j)
+                                .build()
+                );
+                else novelRepository.save(
+                        Novel.builder()
+                                .author(author)
+                                .isPublic(false)
+                                .love(0L)
+                                .genre(genre[(int) (Math.random() * 7)])
                                 .title("author" + i + "  title" + j)
                                 .build()
                 );

@@ -12,10 +12,11 @@ import org.springframework.data.domain.Sort;
 @AllArgsConstructor
 public class NovelPageRequestDTO {
 
+    private String name;
+    private Boolean isBest;
+    private Boolean isMine;
     private int page;
     private int size;
-    private String name;
-    private Boolean isMine;
 
     public NovelPageRequestDTO() {
         this.page = 1;
