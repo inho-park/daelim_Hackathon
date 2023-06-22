@@ -81,12 +81,14 @@ public class NovelServiceImpl implements NovelService{
         Page<Object[]> result;
         String name = pageRequestDTO.getName();
         if(name == null) {
+            // 인기 순서
             if (pageRequestDTO.getIsBest()) {
                 result = novelRepository.getNovelsByPublic(
                         pageRequestDTO.getPageable(Sort.by("love").descending()),
                         true
                 );
                 return new PageResultDTO<>(result, fn);
+            // 출판날짜 순서
             } else {
                 result = novelRepository.getNovelsByPublic(
                         pageRequestDTO.getPageable(Sort.by("id").descending()),
@@ -96,16 +98,19 @@ public class NovelServiceImpl implements NovelService{
             }
         }
         if (pageRequestDTO.getIsMine()) {
+            // 출판 유무로 본인 작품 가져오기
             if (userRepository.existsByName(name)) {
-                result = novelRepository.getNovelsByAuthor(
+                result = novelRepository.getNovelsByAuthorAndPublic(
                     pageRequestDTO.getPageable(Sort.by("id").descending()),
-                    userRepository.findByName(name).get().getId()
+                    userRepository.findByName(name).get().getId(),
+                    pageRequestDTO.getIsPublic()
                 );
                 return new PageResultDTO<>(result, fn);
             } else {
                 throw new RuntimeException("No permission");
             }
         } else {
+            // 좋아요 누른 작품 가져오기
             if (userRepository.existsByName(name)) {
                 result = userNovelRepository.getUserNovelsByUser_Id(
                     pageRequestDTO.getPageable(Sort.by("id").descending()),

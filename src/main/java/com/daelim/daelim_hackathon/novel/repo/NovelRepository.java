@@ -12,16 +12,15 @@ public interface NovelRepository extends JpaRepository<Novel, Long> {
     @Query(
             "SELECT n, n.author " +
             "FROM Novel n " +
-            "WHERE n.author.id=:id"
+            "WHERE n.author.id=:id AND n.isPublic=:bool"
     )
-    Page<Object[]> getNovelsByAuthor(Pageable pageable, @Param("id") Long id);
+    Page<Object[]> getNovelsByAuthorAndPublic(Pageable pageable, @Param("id") Long id, @Param("bool") boolean bool);
 
 
     @Query(
             "SELECT n, n.author " +
             "FROM Novel n " +
             "WHERE n.isPublic=:Y"
-
     )
     Page<Object[]> getNovelsByPublic(Pageable pageable, @Param("Y") boolean y);
 

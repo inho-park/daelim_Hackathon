@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 public class NovelPageRequestDTO {
 
     private String name;
+    private Boolean isPublic;
     private Boolean isBest;
     private Boolean isMine;
     private int page;
