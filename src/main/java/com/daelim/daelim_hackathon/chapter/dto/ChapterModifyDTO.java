@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class ChapterModifyDTO {
-    private String title;
+    private String chapterName;
 }

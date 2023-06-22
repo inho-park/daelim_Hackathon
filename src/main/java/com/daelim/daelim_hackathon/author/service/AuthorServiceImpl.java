@@ -3,6 +3,8 @@ package com.daelim.daelim_hackathon.author.service;
 import com.daelim.daelim_hackathon.author.domain.Role;
 import com.daelim.daelim_hackathon.author.domain.User;
 import com.daelim.daelim_hackathon.author.dto.LoginDTO;
+import com.daelim.daelim_hackathon.author.exception.SameNameException;
+import com.daelim.daelim_hackathon.author.exception.SameUsernameException;
 import com.daelim.daelim_hackathon.author.repo.RoleRepository;
 import com.daelim.daelim_hackathon.author.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -54,9 +56,9 @@ public class AuthorServiceImpl implements AuthorService, UserDetailsService {
     @Override
     public LoginDTO saveUser(User user) {
         if(userRepository.existsByUsername(user.getUsername())) {
-            throw new RuntimeException("username is existed");
+            throw new SameUsernameException("same username");
         } else if(userRepository.existsByName(user.getName())) {
-            throw new RuntimeException("name is existed");
+            throw new SameNameException("same name");
         } else {
             user = User.builder()
                     .name(user.getName())

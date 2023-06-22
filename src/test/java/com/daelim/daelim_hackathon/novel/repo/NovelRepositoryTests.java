@@ -60,14 +60,14 @@ public class NovelRepositoryTests {
     public void 챕터_생성() {
         Novel novel;
         for (long i = 1; i < 11; i++) {
+            long x = 1;
             novel = novelRepository.getReferenceById(i);
             for (long j = 1; j < 11; j++) {
                 if (i == 1 && j >= 2) {
                     chapterRepository.save(
                             Chapter.builder()
                                     .chapterName("novel" + i + "  chapter" + j)
-                                    .totalPages((int)j)
-                                    .prevChapter(j - 1)
+                                    .prevChapter(x - 1)
                                     .novel(novel)
                                     .build()
                     );
@@ -76,11 +76,12 @@ public class NovelRepositoryTests {
                     chapterRepository.save(
                             Chapter.builder()
                                     .chapterName("novel" + i + "  chapter" + j)
-                                    .totalPages((int)j)
                                     .novel(novel)
                                     .build()
                     );
                 }
+
+                x++;
             }
         }
     }

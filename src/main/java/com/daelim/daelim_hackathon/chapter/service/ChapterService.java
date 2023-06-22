@@ -20,7 +20,6 @@ public interface ChapterService {
 
         return Chapter.builder()
                 .chapterName(dto.getChapterName())
-                .totalPages(dto.getTotalPages())
                 .novel(Novel.builder().id(dto.getNovelId()).build())
                 .prevChapter(dto.getPrevChapterId())
                 .build();
@@ -32,7 +31,6 @@ public interface ChapterService {
         return ChapterDTO.builder()
                 .chapterId(chapter.getId())
                 .chapterName(chapter.getChapterName())
-                .totalPages(chapter.getTotalPages())
                 .prevChapterId(chapter.getPrevChapter())
                 .novelId(novel.getId())
                 .modDate(chapter.getModDate())

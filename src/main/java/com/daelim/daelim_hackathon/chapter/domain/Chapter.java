@@ -21,8 +21,6 @@ public class Chapter extends BaseTimeEntity {
     @Column
     private String chapterName;
 
-    @Column
-    private int totalPages;
     @Column(unique = true)
     private Long prevChapter;
 

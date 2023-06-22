@@ -4,6 +4,8 @@ import com.daelim.daelim_hackathon.chapter.domain.Chapter;
 import com.daelim.daelim_hackathon.chapter.dto.ChapterDTO;
 import com.daelim.daelim_hackathon.chapter.dto.ChapterModifyDTO;
 import com.daelim.daelim_hackathon.chapter.dto.ChapterPageRequestDTO;
+import com.daelim.daelim_hackathon.chapter.exception.ChapterException;
+import com.daelim.daelim_hackathon.chapter.exception.LastChapterException;
 import com.daelim.daelim_hackathon.chapter.repo.ChapterRepository;
 import com.daelim.daelim_hackathon.common.dto.PageResultDTO;
 import com.daelim.daelim_hackathon.common.dto.StatusDTO;
@@ -46,7 +48,7 @@ public class ChapterServiceImpl implements ChapterService{
             chapter = optional.get();
             return entityToDTO(optional.get(), chapter.getNovel());
         } else {
-            throw new RuntimeException("chapter isn't exist");
+            throw new ChapterException("chapter isn't exist");
         }
     }
 
@@ -58,7 +60,7 @@ public class ChapterServiceImpl implements ChapterService{
             chapter = optional.get();
             return entityToDTO(chapter, chapter.getNovel());
         } else {
-            throw new RuntimeException("next chapter isn't exist");
+            throw new LastChapterException("next chapter isn't exist");
         }
     }
 
@@ -101,11 +103,11 @@ public class ChapterServiceImpl implements ChapterService{
         Optional<Chapter> optional = chapterRepository.findById(chapterId);
         if(optional.isPresent()) {
             Chapter chapter = optional.get();
-            chapter.changeChapterName(modifyDTO.getTitle());
+            chapter.changeChapterName(modifyDTO.getChapterName());
             chapterRepository.save(chapter);
             return StatusDTO.builder().status("success").build();
         } else {
-            throw new RuntimeException("해당 id 에 속하는 챕터가 없음");
+            throw new ChapterException("해당 id 에 속하는 챕터가 없음");
         }
     }
 

@@ -7,7 +7,10 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.daelim.daelim_hackathon.author.domain.Role;
 import com.daelim.daelim_hackathon.author.domain.User;
 import com.daelim.daelim_hackathon.author.dto.RoleToUserDTO;
+import com.daelim.daelim_hackathon.author.exception.SameNameException;
+import com.daelim.daelim_hackathon.author.exception.SameUsernameException;
 import com.daelim.daelim_hackathon.author.service.AuthorService;
+import com.daelim.daelim_hackathon.common.dto.StatusDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -48,6 +51,10 @@ public class AuthorController {
     public ResponseEntity saveUser(@RequestBody User user) {
         try {
             return new ResponseEntity<>(authorService.saveUser(user), HttpStatus.OK);
+        } catch (SameUsernameException e) {
+            return new ResponseEntity<>(StatusDTO.builder().status(e.getMessage()).build(), HttpStatus.OK);
+        } catch (SameNameException e) {
+            return new ResponseEntity<>(StatusDTO.builder().status(e.getMessage()).build(), HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_GATEWAY);
         } catch (Exception e) {
