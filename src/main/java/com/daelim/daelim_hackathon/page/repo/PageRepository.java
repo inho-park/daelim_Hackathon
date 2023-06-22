@@ -16,4 +16,7 @@ public interface PageRepository extends JpaRepository<Page, Long> {
             "WHERE p.id =:pageId "
     )
     int modifyPrevPage(@Param("pageId") Long pageId , @Param("prev") Page prev);
+
+    Long countByChapter_Id(Long chapterId);
+
 }

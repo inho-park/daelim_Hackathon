@@ -82,6 +82,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         // response header 에 담으면 보안에 취약하므로 바디에 담아서 보내기
         Map<String, String> tokens = new HashMap<>();
+//        tokens.put("granty_type", "Bearer");
         tokens.put("access_token", access_token);
         tokens.put("refresh_token", refresh_token);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

@@ -3,6 +3,7 @@ package com.daelim.daelim_hackathon.author.filter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
@@ -48,9 +49,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     // String[] 로 받은 authority 들을 Collection<SimpleGrantAuthority> 객체에 담기
                     String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
 
-                    // 권한 확인용 출력
-//                    for (String role : roles) log.info(role);
-
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
                     Arrays.stream(roles).forEach(role -> {
                         authorities.add(new SimpleGrantedAuthority(role));
@@ -62,7 +60,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                     // 다음 순서의 filter 로 넘어가기 위해 doFilter() 실행
                     filterChain.doFilter(request, response);
-                }catch (Exception e) {
+                }catch (TokenExpiredException e) {
                     log.error("Error logging in : {}", e.getMessage());
                     response.setHeader("error", "you're monster");
                     response.setStatus(HttpStatus.FORBIDDEN.value());
@@ -71,6 +69,8 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                     // fasterxml.json 기능 중 하나로 ServletOutputStream 에 직접 error(Map)를 집어넣을 수 있음
                     new ObjectMapper().writeValue(response.getOutputStream(), error);
+                }catch (Exception e) {
+                    e.printStackTrace();
                 }
             } else {
                 filterChain.doFilter(request, response);

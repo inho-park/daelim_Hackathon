@@ -3,6 +3,7 @@ package com.daelim.daelim_hackathon.author.resource;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.daelim.daelim_hackathon.author.domain.Role;
 import com.daelim.daelim_hackathon.author.domain.User;
@@ -24,10 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -47,7 +45,7 @@ public class AuthorController {
     }
 
 
-    @PostMapping("/join")
+    @PostMapping(value = "/join", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity saveUser(@RequestBody User user) {
         try {
             return new ResponseEntity<>(authorService.saveUser(user), HttpStatus.OK);
@@ -55,13 +53,12 @@ public class AuthorController {
             return new ResponseEntity<>(StatusDTO.builder().status(e.getMessage()).build(), HttpStatus.OK);
         } catch (SameNameException e) {
             return new ResponseEntity<>(StatusDTO.builder().status(e.getMessage()).build(), HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_GATEWAY);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
 
     @PostMapping("/role/save")
     public ResponseEntity<Role> saveUser(@RequestBody Role role) {
@@ -107,15 +104,17 @@ public class AuthorController {
                 tokens.put("refresh_token", refresh_token);
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);
-            }catch (Exception e) {
+            }catch (TokenExpiredException e) {
                 log.error("Error logging in : {}", e.getMessage());
                 response.setHeader("error", "you're monster");
                 response.setStatus(HttpStatus.FORBIDDEN.value());
                 Map<String, String> error = new HashMap<>();
-                error.put("error", e.getMessage());
+                error.put("error", "need login");
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 // fasterxml.json 기능 중 하나로 ServletOutputStream 에 직접 error(Map)를 집어넣을 수 있음
                 new ObjectMapper().writeValue(response.getOutputStream(), error);
+            }catch (Exception e) {
+                e.printStackTrace();
             }
         } else {
             throw new RuntimeException("Refresh token is missing");
