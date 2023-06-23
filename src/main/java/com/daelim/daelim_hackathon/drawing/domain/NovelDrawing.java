@@ -19,7 +19,7 @@ public class NovelDrawing {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(length = 1000)
     private String uuid;
 
     @OneToOne
