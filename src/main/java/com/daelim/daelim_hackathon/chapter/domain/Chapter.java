@@ -36,6 +36,9 @@ public class Chapter extends BaseTimeEntity {
     public void changeChapterName(String chapterName) {
         this.chapterName = chapterName;
     }
+    public void changeWriting(String writing) {
+        this.writing = writing;
+    }
 
     public void changePrevChapter(Long prevChapter) {
         this.prevChapter = prevChapter;

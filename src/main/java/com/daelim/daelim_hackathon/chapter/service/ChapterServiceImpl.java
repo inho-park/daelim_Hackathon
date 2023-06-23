@@ -112,6 +112,7 @@ public class ChapterServiceImpl implements ChapterService{
         if(optional.isPresent()) {
             Chapter chapter = optional.get();
             chapter.changeChapterName(modifyDTO.getChapterName());
+            chapter.changeWriting(modifyDTO.getWriting());
             chapterRepository.save(chapter);
             return StatusDTO.builder().status("success").build();
         } else {
