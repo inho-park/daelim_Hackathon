@@ -4,6 +4,7 @@ import com.daelim.daelim_hackathon.chapter.domain.Chapter;
 import com.daelim.daelim_hackathon.chapter.dto.ChapterDTO;
 import com.daelim.daelim_hackathon.chapter.dto.ChapterModifyDTO;
 import com.daelim.daelim_hackathon.chapter.dto.ChapterPageRequestDTO;
+import com.daelim.daelim_hackathon.chapter.dto.NoWritingDTO;
 import com.daelim.daelim_hackathon.chapter.exception.ChapterException;
 import com.daelim.daelim_hackathon.chapter.exception.LastChapterException;
 import com.daelim.daelim_hackathon.chapter.repo.ChapterRepository;
@@ -71,9 +72,9 @@ public class ChapterServiceImpl implements ChapterService{
     }
 
     @Override
-    public PageResultDTO<ChapterDTO, Object[]> getChapters(ChapterPageRequestDTO pageRequestDTO) {
-        Function<Object[], ChapterDTO> fn = (
-                entity -> entityToDTO(
+    public PageResultDTO<NoWritingDTO, Object[]> getChapters(ChapterPageRequestDTO pageRequestDTO) {
+        Function<Object[], NoWritingDTO> fn = (
+                entity -> entityToListDTO(
                         (Chapter) entity[0],
                         (Novel) entity[1]
                 )
