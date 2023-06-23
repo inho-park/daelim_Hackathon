@@ -1,10 +1,13 @@
 package com.daelim.daelim_hackathon.chapter.domain;
 
 import com.daelim.daelim_hackathon.common.domain.BaseTimeEntity;
+import com.daelim.daelim_hackathon.drawing.domain.ChapterDrawing;
 import com.daelim.daelim_hackathon.novel.domain.Novel;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter

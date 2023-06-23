@@ -8,6 +8,8 @@ import com.daelim.daelim_hackathon.common.dto.PageResultDTO;
 import com.daelim.daelim_hackathon.common.dto.StatusDTO;
 import com.daelim.daelim_hackathon.novel.domain.Novel;
 
+import java.util.List;
+
 public interface ChapterService {
     ChapterDTO saveChapter(ChapterDTO chapterDTO);
     ChapterDTO getChapter(Long chapterId);
@@ -16,6 +18,7 @@ public interface ChapterService {
     StatusDTO updateChapter(Long chapterId, ChapterModifyDTO modifyDTO);
     ChapterDTO getNextChapter(Long prevId);
     String getFileName(Long chapterId);
+    void deleteDrawingsAndChapters(Long novelId);
 
     String deleteFile(Long chapterId);
 

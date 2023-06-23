@@ -19,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Log4j2
 @RestController
 @RequiredArgsConstructor
@@ -136,7 +138,7 @@ public class NovelController {
     public ResponseEntity delete(@PathVariable(value = "id") String id, @RequestBody NameDTO nameDTO) {
         try {
             awsS3Service.deleteFile(novelService.deleteFile(Long.parseLong(id)));
-
+            chapterService.deleteDrawingsAndChapters(Long.parseLong(id));
             return new ResponseEntity<>(novelService.deleteNovel(Long.parseLong(id), nameDTO.getName()), HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();

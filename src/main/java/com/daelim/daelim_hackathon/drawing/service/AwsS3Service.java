@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.daelim.daelim_hackathon.chapter.domain.Chapter;
+import com.daelim.daelim_hackathon.chapter.repo.ChapterRepository;
 import com.daelim.daelim_hackathon.drawing.domain.NovelDrawing;
 import com.daelim.daelim_hackathon.drawing.domain.ChapterDrawing;
 import com.daelim.daelim_hackathon.drawing.repo.NovelDrawingRepository;
@@ -33,6 +34,7 @@ public class AwsS3Service {
     private final AmazonS3 amazonS3;
     private final NovelDrawingRepository novelDrawingRepository;
     private final ChapterDrawingRepository chapterDrawingRepository;
+    private final ChapterRepository chapterRepository;
 
     /**
      * Novel 전용 그림 테이블 등록
@@ -72,6 +74,9 @@ public class AwsS3Service {
                                 Chapter.builder()
                                         .id(id)
                                         .build()
+                        )
+                        .novel(
+                                chapterRepository.findById(id).orElse(null).getNovel()
                         )
                         .build()
         );

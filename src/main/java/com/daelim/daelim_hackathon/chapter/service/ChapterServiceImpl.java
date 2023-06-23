@@ -10,7 +10,9 @@ import com.daelim.daelim_hackathon.chapter.repo.ChapterRepository;
 import com.daelim.daelim_hackathon.common.dto.PageResultDTO;
 import com.daelim.daelim_hackathon.common.dto.StatusDTO;
 import com.daelim.daelim_hackathon.drawing.domain.ChapterDrawing;
+import com.daelim.daelim_hackathon.drawing.repo.ChapterDrawingMapping;
 import com.daelim.daelim_hackathon.drawing.repo.ChapterDrawingRepository;
+import com.daelim.daelim_hackathon.drawing.service.AwsS3Service;
 import com.daelim.daelim_hackathon.novel.domain.Novel;
 import com.daelim.daelim_hackathon.novel.repo.NovelRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -31,6 +34,7 @@ public class ChapterServiceImpl implements ChapterService{
     private final ChapterRepository chapterRepository;
     private final NovelRepository novelRepository;
     private final ChapterDrawingRepository chapterDrawingRepository;
+    private final AwsS3Service awsS3Service;
 
     @Override
     public ChapterDTO saveChapter(ChapterDTO chapterDTO) {
@@ -91,11 +95,13 @@ public class ChapterServiceImpl implements ChapterService{
         if(nextOptional.isPresent()) {
             Chapter next = nextOptional.get();
             Long prev = chapterRepository.getReferenceById(chapterId).getPrevChapter();
-            chapterRepository.delete(chapterRepository.getReferenceById(chapterId));
+            awsS3Service.deleteFile(deleteFile(chapterId));
+            chapterRepository.deleteById(chapterId);
             next.changePrevChapter(prev);
             chapterRepository.save(next);
         } else {
-            chapterRepository.delete(chapterRepository.getReferenceById(chapterId));
+            awsS3Service.deleteFile(deleteFile(chapterId));
+            chapterRepository.deleteById(chapterId);
         }
         return StatusDTO.builder().status("success").build();
     }
@@ -117,6 +123,17 @@ public class ChapterServiceImpl implements ChapterService{
     @Override
     public String getFileName(Long chapterId) {
         return chapterDrawingRepository.findByChapter_Id(chapterId).getUuid();
+    }
+
+
+    @Override
+    public void deleteDrawingsAndChapters(Long novelId) {
+        List<ChapterDrawingMapping> list = chapterDrawingRepository.findAllByNovel_Id(novelId);
+        chapterDrawingRepository.deleteChapterDrawingByNovel_Id(novelId);
+        chapterRepository.deleteAllByNovel_Id(novelId);
+        for(int i = 0; i<list.size(); i++) {
+            awsS3Service.deleteFile(String.valueOf(list.get(i)));
+        }
     }
 
     @Override
