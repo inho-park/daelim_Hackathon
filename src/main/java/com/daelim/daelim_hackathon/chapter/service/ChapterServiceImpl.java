@@ -79,7 +79,7 @@ public class ChapterServiceImpl implements ChapterService{
                 )
         );
         Page<Object[]> result = chapterRepository.getChaptersByNovel_Id(
-                pageRequestDTO.getPageable(Sort.by("id").descending()),
+                pageRequestDTO.getPageable(Sort.by("id").ascending()),
                 Long.parseLong(pageRequestDTO.getNovelId())
         );
 

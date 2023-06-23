@@ -176,6 +176,7 @@ public class NovelController {
             @PathVariable("id") String id
     ) {
         try {
+            novelService.visible(Long.parseLong(id));
             return new ResponseEntity<>(
                     FileNameDTO.builder().fileName(awsS3Service.saveNovelDrawing(
                             Long.parseLong(id),

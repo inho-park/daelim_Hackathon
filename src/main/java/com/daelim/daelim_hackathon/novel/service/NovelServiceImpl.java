@@ -133,7 +133,7 @@ public class NovelServiceImpl implements NovelService{
                         pageRequestDTO.getKeyword()
                 );
                 else result = novelRepository.getNovelsByGenre(
-                        pageRequestDTO.getPageable(Sort.by("id").descending()),
+                        pageRequestDTO.getPageable(Sort.by("id").ascending()),
                         pageRequestDTO.getKeyword()
                 );
                 return new PageResultDTO<>(result, fn);
@@ -144,7 +144,7 @@ public class NovelServiceImpl implements NovelService{
                         pageRequestDTO.getKeyword()
                 );
                 else result = novelRepository.getNovelsByTitle(
-                        pageRequestDTO.getPageable(Sort.by("id").descending()),
+                        pageRequestDTO.getPageable(Sort.by("id").ascending()),
                         pageRequestDTO.getKeyword()
                 );
                 return new PageResultDTO<>(result, fn);
@@ -155,7 +155,7 @@ public class NovelServiceImpl implements NovelService{
                         pageRequestDTO.getKeyword()
                 );
                 else result = novelRepository.getNovelsByAuthor_Name(
-                        pageRequestDTO.getPageable(Sort.by("id").descending()),
+                        pageRequestDTO.getPageable(Sort.by("id").ascending()),
                         pageRequestDTO.getKeyword()
                 );
                 return new PageResultDTO<>(result, fn);
@@ -235,5 +235,12 @@ public class NovelServiceImpl implements NovelService{
         String uuid = novelDrawingRepository.findByNovel_Id(novelId).getUuid();
         novelDrawingRepository.deleteNovelDrawingByNovel_Id(novelId);
         return uuid;
+    }
+
+    @Override
+    public void visible(Long novelId) {
+        Novel novel = novelRepository.getReferenceById(novelId);
+        novel.changeIsPublic();
+        novelRepository.save(novel);
     }
 }

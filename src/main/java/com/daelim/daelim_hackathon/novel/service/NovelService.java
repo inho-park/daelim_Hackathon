@@ -19,6 +19,7 @@ public interface NovelService {
     StatusDTO love(Long novelId, String username);
     String getFileName(Long novelId);
     String deleteFile(Long novelId);
+    void visible(Long novelId);
 
     default Novel dtoToEntity(NovelDTO dto, User author) {
         Novel novel = Novel.builder()
