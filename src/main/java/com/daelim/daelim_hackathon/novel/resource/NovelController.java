@@ -215,6 +215,7 @@ public class NovelController {
     public ResponseEntity uploadURL(@RequestBody StringDTO stringDTO,
                                  @PathVariable("id") String id) {
         try {
+            novelService.visible(Long.parseLong(id));
             return new ResponseEntity<>(
                     StringDTO.builder().string(
                             novelService.uploadURL(
