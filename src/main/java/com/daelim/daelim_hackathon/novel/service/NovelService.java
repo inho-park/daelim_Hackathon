@@ -21,6 +21,10 @@ public interface NovelService {
     String deleteFile(Long novelId);
     void visible(Long novelId);
 
+
+    String uploadURL(String url, Long novelId);
+
+
     default Novel dtoToEntity(NovelDTO dto, User author) {
         Novel novel = Novel.builder()
                 .title(dto.getTitle())

@@ -211,5 +211,21 @@ public class NovelController {
         }
     }
 
-
+    @PostMapping(value = "/upload/{id}")
+    public ResponseEntity getURL(@RequestBody StringDTO stringDTO,
+                                 @PathVariable("id") String id) {
+        try {
+            return new ResponseEntity<>(
+                    StringDTO.builder().string(
+                            novelService.uploadURL(
+                                    stringDTO.getString(),
+                                    Long.parseLong(id)))
+                            .build(),
+                    HttpStatus.OK
+            );
+        } catch(Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

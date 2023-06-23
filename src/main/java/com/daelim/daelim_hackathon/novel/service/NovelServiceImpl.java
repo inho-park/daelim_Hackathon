@@ -2,6 +2,7 @@ package com.daelim.daelim_hackathon.novel.service;
 
 import com.daelim.daelim_hackathon.author.domain.User;
 import com.daelim.daelim_hackathon.author.repo.UserRepository;
+import com.daelim.daelim_hackathon.drawing.domain.NovelDrawing;
 import com.daelim.daelim_hackathon.drawing.repo.NovelDrawingRepository;
 import com.daelim.daelim_hackathon.novel.domain.UserNovel;
 import com.daelim.daelim_hackathon.novel.dto.NovelPageRequestDTO;
@@ -243,4 +244,16 @@ public class NovelServiceImpl implements NovelService{
         novel.changeIsPublic();
         novelRepository.save(novel);
     }
+
+    @Override
+    public String uploadURL(String url, Long novelId) {
+        novelDrawingRepository.save(NovelDrawing.builder()
+                .novel(novelRepository.getReferenceById(novelId))
+                .uuid(url)
+                .build()
+        );
+        return url;
+    }
+
+
 }
