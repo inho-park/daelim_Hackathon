@@ -5,8 +5,6 @@ import com.daelim.daelim_hackathon.author.repo.UserRepository;
 import com.daelim.daelim_hackathon.chapter.domain.Chapter;
 import com.daelim.daelim_hackathon.chapter.repo.ChapterRepository;
 import com.daelim.daelim_hackathon.novel.domain.Novel;
-import com.daelim.daelim_hackathon.page.domain.Page;
-import com.daelim.daelim_hackathon.page.repo.PageRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,8 +19,6 @@ public class NovelRepositoryTests {
     private NovelRepository novelRepository;
     @Autowired
     private ChapterRepository chapterRepository;
-    @Autowired
-    private PageRepository pageRepository;
 
     /**
      * 시작 시 위에서 순서대로 실행하기
@@ -83,39 +79,6 @@ public class NovelRepositoryTests {
 
                 x++;
             }
-        }
-    }
-
-    @Test
-    public void 페이지_생성() {
-        Chapter chapter;
-        for (long i = 1; i < 11; i++) {
-            chapter = chapterRepository.getReferenceById(i);
-            pageRepository.save(
-                    Page.builder()
-                            .isImage(true)
-                            .chapter(chapter)
-                            .build()
-            );
-            for (int j = 2; j < 11; j++) {
-                pageRepository.save(
-                        Page.builder()
-                                .isImage(false)
-                                .content("chapter" + i + "  page" + j)
-                                .chapter(chapter)
-                                .build()
-                );
-            }
-        }
-    }
-
-    @Test
-    public void 이전_페이지연결() {
-        Page prev;
-        int result [] = new int [9];
-        for (long i = 2; i < 11; i++) {
-            prev = pageRepository.findById(i - 1).orElse(null);
-            result[(int) (i-2)] = pageRepository.modifyPrevPage(i, prev);
         }
     }
 }
