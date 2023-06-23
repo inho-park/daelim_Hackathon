@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.*;
 public class ChapterController {
     private final ChapterService chapterService;
 
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getList(@RequestBody ChapterPageRequestDTO pageRequestDTO) {
+    @GetMapping()
+    public ResponseEntity getList(@ModelAttribute ChapterPageRequestDTO pageRequestDTO) {
         try {
             return new ResponseEntity<>(chapterService.getChapters(pageRequestDTO), HttpStatus.OK);
         }catch (Exception e) {
@@ -40,7 +40,7 @@ public class ChapterController {
         }
     }
 
-    @GetMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}")
     public ResponseEntity read(@PathVariable(value = "id") String id) {
         try {
             return new ResponseEntity<>(chapterService.getChapter(Long.parseLong(id)), HttpStatus.OK);
@@ -50,7 +50,7 @@ public class ChapterController {
         }
     }
 
-    @GetMapping(value = "/{id}/next", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}/next")
     public ResponseEntity next(@PathVariable(value = "id") String id) {
         try {
             return new ResponseEntity<>(chapterService.getNextChapter(Long.parseLong(id)), HttpStatus.OK);
