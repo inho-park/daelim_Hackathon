@@ -132,7 +132,7 @@ public class ChapterServiceImpl implements ChapterService{
         chapterDrawingRepository.deleteChapterDrawingByNovel_Id(novelId);
         chapterRepository.deleteAllByNovel_Id(novelId);
         for(int i = 0; i<list.size(); i++) {
-            awsS3Service.deleteFile(String.valueOf(list.get(i)));
+            awsS3Service.deleteFile(list.get(i).getUuid());
         }
     }
 
