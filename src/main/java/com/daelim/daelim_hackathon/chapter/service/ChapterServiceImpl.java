@@ -33,11 +33,10 @@ public class ChapterServiceImpl implements ChapterService{
     private final ChapterDrawingRepository chapterDrawingRepository;
 
     @Override
-    public StatusDTO saveChapter(ChapterDTO chapterDTO) {
+    public ChapterDTO saveChapter(ChapterDTO chapterDTO) {
         try {
             Novel novel = novelRepository.findById(chapterDTO.getNovelId()).get();
-            entityToDTO(chapterRepository.save(dtoToEntity(chapterDTO)), novel);
-            return StatusDTO.builder().status("success").build();
+            return entityToDTO(chapterRepository.save(dtoToEntity(chapterDTO)), novel);
         } catch(Exception e) {
             throw e;
         }

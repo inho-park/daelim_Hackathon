@@ -9,7 +9,7 @@ import com.daelim.daelim_hackathon.common.dto.StatusDTO;
 import com.daelim.daelim_hackathon.novel.domain.Novel;
 
 public interface ChapterService {
-    StatusDTO saveChapter(ChapterDTO chapterDTO);
+    ChapterDTO saveChapter(ChapterDTO chapterDTO);
     ChapterDTO getChapter(Long chapterId);
     PageResultDTO<ChapterDTO, Object[]> getChapters(ChapterPageRequestDTO pageRequestDTO);
     StatusDTO deleteChapter(Long chapterId);
