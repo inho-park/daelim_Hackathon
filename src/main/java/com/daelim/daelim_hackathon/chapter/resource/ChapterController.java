@@ -7,6 +7,7 @@ import com.daelim.daelim_hackathon.chapter.exception.LastChapterException;
 import com.daelim.daelim_hackathon.chapter.service.ChapterService;
 import com.daelim.daelim_hackathon.common.dto.StatusDTO;
 import com.daelim.daelim_hackathon.drawing.dto.FileNameDTO;
+import com.daelim.daelim_hackathon.drawing.dto.StringDTO;
 import com.daelim.daelim_hackathon.drawing.service.AwsS3Service;
 import com.daelim.daelim_hackathon.drawing.service.PapagoService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,15 @@ public class ChapterController {
     private final ChapterService chapterService;
     private final AwsS3Service awsS3Service;
     private final PapagoService papagoService;
+
+    @PostMapping(value = "/translate", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getEn(@RequestBody StringDTO stringDTO) {
+        try {
+            return ResponseEntity.ok().body(papagoService.koToEn(stringDTO.getString()));
+        } catch(Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
     @GetMapping()
     public ResponseEntity getList(@ModelAttribute ChapterPageRequestDTO pageRequestDTO) {

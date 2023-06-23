@@ -24,9 +24,11 @@ public class Chapter extends BaseTimeEntity {
     @Column(unique = true)
     private Long prevChapter;
 
+    @Column(length = 5000)
+    private String writing;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Novel novel;
-
 
     public void changeChapterName(String chapterName) {
         this.chapterName = chapterName;

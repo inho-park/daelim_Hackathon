@@ -9,6 +9,8 @@ import com.daelim.daelim_hackathon.chapter.exception.LastChapterException;
 import com.daelim.daelim_hackathon.chapter.repo.ChapterRepository;
 import com.daelim.daelim_hackathon.common.dto.PageResultDTO;
 import com.daelim.daelim_hackathon.common.dto.StatusDTO;
+import com.daelim.daelim_hackathon.drawing.domain.ChapterDrawing;
+import com.daelim.daelim_hackathon.drawing.repo.ChapterDrawingRepository;
 import com.daelim.daelim_hackathon.novel.domain.Novel;
 import com.daelim.daelim_hackathon.novel.repo.NovelRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,7 @@ public class ChapterServiceImpl implements ChapterService{
 
     private final ChapterRepository chapterRepository;
     private final NovelRepository novelRepository;
+    private final ChapterDrawingRepository chapterDrawingRepository;
 
     @Override
     public StatusDTO saveChapter(ChapterDTO chapterDTO) {
@@ -62,11 +65,6 @@ public class ChapterServiceImpl implements ChapterService{
         } else {
             throw new LastChapterException("next chapter isn't exist");
         }
-    }
-
-    @Override
-    public String getFileName(Long chapterId) {
-        return null;
     }
 
     @Override
@@ -116,4 +114,16 @@ public class ChapterServiceImpl implements ChapterService{
         }
     }
 
+
+    @Override
+    public String getFileName(Long chapterId) {
+        return chapterDrawingRepository.findByChapter_Id(chapterId).getUuid();
+    }
+
+    @Override
+    public String deleteFile(Long chapterId) {
+        ChapterDrawing drawing = chapterDrawingRepository.findByChapter_Id(chapterId);
+        chapterDrawingRepository.deleteChapterDrawingByChapter_Id(chapterId);
+        return drawing.getUuid();
+    }
 }

@@ -16,7 +16,7 @@ public interface ChapterService {
     StatusDTO updateChapter(Long chapterId, ChapterModifyDTO modifyDTO);
     ChapterDTO getNextChapter(Long prevId);
     String getFileName(Long chapterId);
-
+    String deleteFile(Long chapterId);
 
     default Chapter dtoToEntity(ChapterDTO dto) {
 
