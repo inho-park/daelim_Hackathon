@@ -44,7 +44,6 @@ public class AuthorController {
         return ResponseEntity.ok().body(authorService.getUsers());
     }
 
-
     @PostMapping(value = "/join", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity saveUser(@RequestBody User user) {
         try {
@@ -59,17 +58,46 @@ public class AuthorController {
         }
     }
 
-
-    @PostMapping("/role/save")
-    public ResponseEntity<Role> saveUser(@RequestBody Role role) {
-        return ResponseEntity.ok().body(authorService.saveRole(role));
+    @GetMapping("/name")
+    public void getName(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // header 에 authorization 으로 Bearer {refresh token} 받기 ( refresh token 은 쿠키로 관리 )
+        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            try {
+                // local 에서 사용할 GrantType 으로 가정하여 Bearer 만 받음
+                // 토큰 값만 자르기
+                String access_token = authorizationHeader.substring("Bearer ".length());
+                // token 을 생성할 때 사용한 알고리즘과 일치
+                Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY.getBytes());
+                // 토큰 검증 객체를 생성한 후 알고리즘 주기
+                JWTVerifier verifier = JWT.require(algorithm).build();
+                // 토큰 검증 객체에서 검증된 복호화된 토큰 변수 지정
+                DecodedJWT decodedJWT = verifier.verify(access_token);
+                // 토큰에서 정보 빼내기
+                String username = decodedJWT.getSubject();
+                // 빼낸 정보로 DB 조회하기
+                User user = authorService.getUser(username);
+                Map<String, String> tokens = new HashMap<>();
+                tokens.put("name", user.getName());
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            throw new RuntimeException("Refresh token is missing");
+        }
     }
-
-    @PostMapping("/role/addtouser")
-    public ResponseEntity<?> addRoleToUser(@RequestBody RoleToUserDTO form) {
-        authorService.addRoleToUser(form.getUsername(), form.getRoleName());
-        return ResponseEntity.ok().build();
-    }
+//    @PostMapping("/role/save")
+//    public ResponseEntity<Role> saveUser(@RequestBody Role role) {
+//        return ResponseEntity.ok().body(authorService.saveRole(role));
+//    }
+//
+//    @PostMapping("/role/addtouser")
+//    public ResponseEntity<?> addRoleToUser(@RequestBody RoleToUserDTO form) {
+//        authorService.addRoleToUser(form.getUsername(), form.getRoleName());
+//        return ResponseEntity.ok().build();
+//    }
 
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
