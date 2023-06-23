@@ -11,6 +11,7 @@ import com.daelim.daelim_hackathon.chapter.repo.ChapterRepository;
 import com.daelim.daelim_hackathon.common.dto.PageResultDTO;
 import com.daelim.daelim_hackathon.common.dto.StatusDTO;
 import com.daelim.daelim_hackathon.drawing.domain.ChapterDrawing;
+import com.daelim.daelim_hackathon.drawing.domain.NovelDrawing;
 import com.daelim.daelim_hackathon.drawing.repo.ChapterDrawingMapping;
 import com.daelim.daelim_hackathon.drawing.repo.ChapterDrawingRepository;
 import com.daelim.daelim_hackathon.drawing.service.AwsS3Service;
@@ -143,5 +144,22 @@ public class ChapterServiceImpl implements ChapterService{
         String uuid = chapterDrawingRepository.findByChapter_Id(chapterId).getUuid();
         chapterDrawingRepository.deleteChapterDrawingByChapter_Id(chapterId);
         return uuid;
+    }
+
+
+    @Override
+    public String uploadURL(String url, Long chapterId) {
+        chapterDrawingRepository.save(ChapterDrawing.builder()
+                .chapter(chapterRepository.getReferenceById(chapterId))
+                .novel(chapterRepository.getReferenceById(chapterId).getNovel())
+                .uuid(url)
+                .build()
+        );
+        return url;
+    }
+
+    @Override
+    public String getURL(Long chapterId) {
+        return chapterDrawingRepository.findByChapter_Id(chapterId).getUuid();
     }
 }

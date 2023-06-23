@@ -98,6 +98,49 @@ public class ChapterController {
         }
     }
 
+    @PostMapping(value = "/upload/{id}")
+    public ResponseEntity uploadURL(@RequestBody StringDTO stringDTO,
+                                    @PathVariable("id") String id) {
+        try {
+            return new ResponseEntity<>(
+                    StringDTO.builder().string(
+                                    chapterService.uploadURL(
+                                            stringDTO.getString(),
+                                            Long.parseLong(id)))
+                            .build(),
+                    HttpStatus.OK
+            );
+        } catch(Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/download/{id}")
+    public ResponseEntity getURL(@PathVariable("id") String id) {
+        try {
+            return new ResponseEntity<>(
+                    StringDTO.builder().string(
+                                    chapterService.getURL(
+                                            Long.parseLong(id)))
+                            .build(),
+                    HttpStatus.OK
+            );
+        } catch(Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
     @PostMapping(value = "/drawing/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity uploadFile(
             @RequestPart(value = "file", required = false) MultipartFile multipartFile,

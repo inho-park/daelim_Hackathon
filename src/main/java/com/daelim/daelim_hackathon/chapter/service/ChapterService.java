@@ -20,8 +20,12 @@ public interface ChapterService {
     ChapterDTO getNextChapter(Long prevId);
     String getFileName(Long chapterId);
     void deleteDrawingsAndChapters(Long novelId);
-
     String deleteFile(Long chapterId);
+
+
+    String uploadURL(String url, Long chapterId);
+    String getURL(Long chapterId);
+
 
     default Chapter dtoToEntity(ChapterDTO dto) {
 
