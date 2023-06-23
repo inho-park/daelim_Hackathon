@@ -16,6 +16,7 @@ public interface ChapterService {
     StatusDTO updateChapter(Long chapterId, ChapterModifyDTO modifyDTO);
     ChapterDTO getNextChapter(Long prevId);
     String getFileName(Long chapterId);
+
     String deleteFile(Long chapterId);
 
     default Chapter dtoToEntity(ChapterDTO dto) {
@@ -23,6 +24,7 @@ public interface ChapterService {
         return Chapter.builder()
                 .chapterName(dto.getChapterName())
                 .novel(Novel.builder().id(dto.getNovelId()).build())
+                .writing(dto.getWriting())
                 .prevChapter(dto.getPrevChapterId())
                 .build();
 
@@ -34,6 +36,7 @@ public interface ChapterService {
                 .chapterId(chapter.getId())
                 .chapterName(chapter.getChapterName())
                 .prevChapterId(chapter.getPrevChapter())
+                .writing(chapter.getWriting())
                 .novelId(novel.getId())
                 .modDate(chapter.getModDate())
                 .regDate(chapter.getRegDate())

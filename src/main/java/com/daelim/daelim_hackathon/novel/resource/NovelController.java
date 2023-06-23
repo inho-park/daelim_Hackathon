@@ -96,7 +96,6 @@ public class NovelController {
      * 소설 불러오기
      *
      * @param id
-     * @param nameDTO
      * @return novelDTO
      */
     @GetMapping(value = "/{id}")
@@ -137,6 +136,7 @@ public class NovelController {
     public ResponseEntity delete(@PathVariable(value = "id") String id, @RequestBody NameDTO nameDTO) {
         try {
             awsS3Service.deleteFile(novelService.deleteFile(Long.parseLong(id)));
+
             return new ResponseEntity<>(novelService.deleteNovel(Long.parseLong(id), nameDTO.getName()), HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();

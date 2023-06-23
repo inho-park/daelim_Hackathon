@@ -122,8 +122,8 @@ public class ChapterServiceImpl implements ChapterService{
 
     @Override
     public String deleteFile(Long chapterId) {
-        ChapterDrawing drawing = chapterDrawingRepository.findByChapter_Id(chapterId);
+        String uuid = chapterDrawingRepository.findByChapter_Id(chapterId).getUuid();
         chapterDrawingRepository.deleteChapterDrawingByChapter_Id(chapterId);
-        return drawing.getUuid();
+        return uuid;
     }
 }

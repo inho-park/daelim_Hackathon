@@ -10,7 +10,7 @@ import com.daelim.daelim_hackathon.common.dto.StatusDTO;
 import com.daelim.daelim_hackathon.novel.dto.SearchPageRequestDTO;
 
 public interface NovelService {
-    StatusDTO saveNovel(NovelDTO novelDTO);
+    NovelDTO saveNovel(NovelDTO novelDTO);
     NovelDTO getNovel(Long novelId);
     PageResultDTO<NovelDTO, Object[]> getNovels(NovelPageRequestDTO pageRequestDTO);
     PageResultDTO<NovelDTO, Object[]> searchNovels(SearchPageRequestDTO pageRequestDTO);

@@ -11,6 +11,7 @@ import com.daelim.daelim_hackathon.novel.dto.NovelModifyDTO;
 import com.daelim.daelim_hackathon.novel.dto.NovelDTO;
 import com.daelim.daelim_hackathon.common.dto.StatusDTO;
 import com.daelim.daelim_hackathon.novel.dto.SearchPageRequestDTO;
+import com.daelim.daelim_hackathon.novel.exception.SearchException;
 import com.daelim.daelim_hackathon.novel.repo.NovelRepository;
 import com.daelim.daelim_hackathon.novel.repo.UserNovelRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,12 +36,13 @@ public class NovelServiceImpl implements NovelService{
 
 
     @Override
-    public StatusDTO saveNovel(NovelDTO novelDTO) {
+    public NovelDTO saveNovel(NovelDTO novelDTO) {
         Optional<User> option = userRepository.findByName(novelDTO.getName());
         if(option.isPresent()) {
-            Novel novel = dtoToEntity(novelDTO, option.get());
+            User user = option.get();
+            Novel novel = dtoToEntity(novelDTO, user);
             novelRepository.save(novel);
-            return StatusDTO.builder().status("success").build();
+            return entityToDTO(novel, user);
         } else {
             throw new RuntimeException("This account doesn't exist");
         }
@@ -126,16 +128,42 @@ public class NovelServiceImpl implements NovelService{
         String category = pageRequestDTO.getCategory();
         switch (category) {
             case "g":
-                result = novelRepository.getNovelsByGenre(
+                if (pageRequestDTO.isBest()) result = novelRepository.getNovelsByGenre(
+                        pageRequestDTO.getPageable(Sort.by("love").descending()),
+                        pageRequestDTO.getKeyword()
+                );
+                else result = novelRepository.getNovelsByGenre(
                         pageRequestDTO.getPageable(Sort.by("id").descending()),
                         pageRequestDTO.getKeyword()
                 );
                 return new PageResultDTO<>(result, fn);
 
             case "t":
+                if (pageRequestDTO.isBest()) result = novelRepository.getNovelsByTitle(
+                        pageRequestDTO.getPageable(Sort.by("love").descending()),
+                        pageRequestDTO.getKeyword()
+                );
+                else result = novelRepository.getNovelsByTitle(
+                        pageRequestDTO.getPageable(Sort.by("id").descending()),
+                        pageRequestDTO.getKeyword()
+                );
+                return new PageResultDTO<>(result, fn);
 
+            case "n":
+                if (pageRequestDTO.isBest()) result = novelRepository.getNovelsByAuthor_Name(
+                        pageRequestDTO.getPageable(Sort.by("love").descending()),
+                        pageRequestDTO.getKeyword()
+                );
+                else result = novelRepository.getNovelsByAuthor_Name(
+                        pageRequestDTO.getPageable(Sort.by("id").descending()),
+                        pageRequestDTO.getKeyword()
+                );
+                return new PageResultDTO<>(result, fn);
+
+            default:
+                throw new SearchException("검색 카테고리 및 키워드 확인하기");
         }
-        return null;
+
     }
 
 

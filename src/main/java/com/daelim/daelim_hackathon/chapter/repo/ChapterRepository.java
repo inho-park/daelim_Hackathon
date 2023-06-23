@@ -21,4 +21,6 @@ public interface ChapterRepository extends JpaRepository<Chapter, Long> {
             "WHERE c.novel.id=:id"
     )
     Page<Object[]> getChaptersByNovel_Id(Pageable pageable, @Param("id") Long id);
+
+    int deleteAllByNovel_Id(Long novelId);
 }

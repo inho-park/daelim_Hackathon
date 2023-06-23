@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 public class SearchPageRequestDTO {
     private String category;
     private String keyword;
+    private boolean isBest;
     private int page;
     private int size;
 

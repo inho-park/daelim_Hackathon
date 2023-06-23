@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class ChapterDTO {
     private Long chapterId;
     private String chapterName;
-    private int totalPages;
+    private String writing;
     private Long prevChapterId;
     private Long novelId;
     private LocalDateTime regDate,modDate;
