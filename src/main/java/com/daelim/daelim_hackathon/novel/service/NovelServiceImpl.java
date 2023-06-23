@@ -255,5 +255,10 @@ public class NovelServiceImpl implements NovelService{
         return url;
     }
 
+    @Override
+    public String getURL(Long novelId) {
+        return novelDrawingRepository.findByNovel_Id(novelId).getUuid();
+    }
+
 
 }

@@ -23,6 +23,7 @@ public interface NovelService {
 
 
     String uploadURL(String url, Long novelId);
+    String getURL(Long novelId);
 
 
     default Novel dtoToEntity(NovelDTO dto, User author) {
