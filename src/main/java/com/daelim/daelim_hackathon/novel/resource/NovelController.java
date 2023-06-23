@@ -10,13 +10,11 @@ import com.daelim.daelim_hackathon.novel.dto.NovelModifyDTO;
 import com.daelim.daelim_hackathon.novel.dto.NovelDTO;
 import com.daelim.daelim_hackathon.novel.dto.NovelPageRequestDTO;
 import com.daelim.daelim_hackathon.novel.service.NovelService;
-import com.daelim.daelim_hackathon.page.service.PageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,15 +27,14 @@ public class NovelController {
     private final AwsS3Service awsS3Service;
     private final PapagoService papagoService;
     private final ChapterService chapterService;
-    private final PageService pageService;
     /**
      * 한글 영어로 번역
      * 
      * @param stringDTO
      * @return stringDTO(string = 영어로 번역된 문자열)
      */
-    @PostMapping(value = "/translate")
-    public ResponseEntity getEn(@ModelAttribute StringDTO stringDTO) {
+    @PostMapping(value = "/translate", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getEn(@RequestBody StringDTO stringDTO) {
         try {
             return ResponseEntity.ok().body(papagoService.koToEn(stringDTO.getString()));
         } catch(Exception e) {

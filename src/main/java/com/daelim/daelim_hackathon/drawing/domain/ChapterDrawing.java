@@ -1,6 +1,6 @@
 package com.daelim.daelim_hackathon.drawing.domain;
 
-import com.daelim.daelim_hackathon.page.domain.Page;
+import com.daelim.daelim_hackathon.chapter.domain.Chapter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PageDrawing {
+public class ChapterDrawing {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +22,6 @@ public class PageDrawing {
     @Column
     private String uuid;
 
-    @OneToOne
-    private Page page;
+    @ManyToOne
+    private Chapter chapter;
 }

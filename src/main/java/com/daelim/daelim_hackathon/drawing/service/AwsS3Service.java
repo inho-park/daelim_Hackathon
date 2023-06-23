@@ -5,12 +5,12 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.daelim.daelim_hackathon.chapter.domain.Chapter;
 import com.daelim.daelim_hackathon.drawing.domain.NovelDrawing;
-import com.daelim.daelim_hackathon.drawing.domain.PageDrawing;
+import com.daelim.daelim_hackathon.drawing.domain.ChapterDrawing;
 import com.daelim.daelim_hackathon.drawing.repo.NovelDrawingRepository;
-import com.daelim.daelim_hackathon.drawing.repo.PageDrawingRepository;
+import com.daelim.daelim_hackathon.drawing.repo.ChapterDrawingRepository;
 import com.daelim.daelim_hackathon.novel.domain.Novel;
-import com.daelim.daelim_hackathon.page.domain.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,8 +21,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Log4j2
@@ -34,7 +32,7 @@ public class AwsS3Service {
 
     private final AmazonS3 amazonS3;
     private final NovelDrawingRepository novelDrawingRepository;
-    private final PageDrawingRepository pageDrawingRepository;
+    private final ChapterDrawingRepository chapterDrawingRepository;
 
     /**
      * Novel 전용 그림 테이블 등록
@@ -65,13 +63,13 @@ public class AwsS3Service {
      * @param multipartFile
      * @return fileName
      */
-    public String savePageDrawing(Long id, MultipartFile multipartFile) {
+    public String saveChapterDrawing(Long id, MultipartFile multipartFile) {
         String fileName = uploadFile(multipartFile);
-        pageDrawingRepository.save(
-                PageDrawing.builder()
+        chapterDrawingRepository.save(
+                ChapterDrawing.builder()
                         .uuid(fileName)
-                        .page(
-                                Page.builder()
+                        .chapter(
+                                Chapter.builder()
                                         .id(id)
                                         .build()
                         )

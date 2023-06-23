@@ -65,6 +65,11 @@ public class ChapterServiceImpl implements ChapterService{
     }
 
     @Override
+    public String getFileName(Long chapterId) {
+        return null;
+    }
+
+    @Override
     public PageResultDTO<ChapterDTO, Object[]> getChapters(ChapterPageRequestDTO pageRequestDTO) {
         Function<Object[], ChapterDTO> fn = (
                 entity -> entityToDTO(

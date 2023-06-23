@@ -6,12 +6,16 @@ import com.daelim.daelim_hackathon.chapter.dto.ChapterPageRequestDTO;
 import com.daelim.daelim_hackathon.chapter.exception.LastChapterException;
 import com.daelim.daelim_hackathon.chapter.service.ChapterService;
 import com.daelim.daelim_hackathon.common.dto.StatusDTO;
+import com.daelim.daelim_hackathon.drawing.dto.FileNameDTO;
+import com.daelim.daelim_hackathon.drawing.service.AwsS3Service;
+import com.daelim.daelim_hackathon.drawing.service.PapagoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Log4j2
 @RestController
@@ -19,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/chapters")
 public class ChapterController {
     private final ChapterService chapterService;
+    private final AwsS3Service awsS3Service;
+    private final PapagoService papagoService;
 
     @GetMapping()
     public ResponseEntity getList(@ModelAttribute ChapterPageRequestDTO pageRequestDTO) {
@@ -77,6 +83,40 @@ public class ChapterController {
         try {
             return new ResponseEntity<>(chapterService.deleteChapter(Long.parseLong(id)), HttpStatus.OK);
         }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping(value = "/drawing/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity uploadFile(
+            @RequestPart(value = "file", required = false) MultipartFile multipartFile,
+            @PathVariable("id") String id
+    ) {
+        try {
+            return new ResponseEntity<>(
+                    FileNameDTO.builder().fileName(awsS3Service.saveChapterDrawing(
+                            Long.parseLong(id),
+                            multipartFile
+                    )).build(),
+                    HttpStatus.OK
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/drawing/{id}")
+    public ResponseEntity getFile(@PathVariable("id") String id) {
+        try {
+            return new ResponseEntity<>(
+                    FileNameDTO.builder().fileName(chapterService.getFileName(
+                            Long.parseLong(id)
+                    )).build(),
+                    HttpStatus.OK
+            );
+        } catch(Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
