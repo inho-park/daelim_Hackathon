@@ -24,4 +24,25 @@ public interface NovelRepository extends JpaRepository<Novel, Long> {
     )
     Page<Object[]> getNovelsByPublic(Pageable pageable, @Param("Y") boolean y);
 
+
+    @Query(
+            "SELECT n, n.author " +
+            "FROM Novel n " +
+            "WHERE n.genre=:genre"
+    )
+    Page<Object[]> getNovelsByGenre(Pageable pageable, @Param("genre") String genre);
+
+    @Query(
+            "SELECT n, n.author " +
+            "FROM Novel n " +
+            "WHERE n.title=:title"
+    )
+    Page<Object[]> getNovelsByTitle(Pageable pageable, @Param("title") String title);
+
+    @Query(
+            "SELECT n, n.author " +
+            "FROM Novel n " +
+            "WHERE n.author.name=:name"
+    )
+    Page<Object[]> getNovelsByAuthor_Name(Pageable pageable, @Param("name") String name);
 }

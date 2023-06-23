@@ -7,11 +7,13 @@ import com.daelim.daelim_hackathon.novel.domain.Novel;
 import com.daelim.daelim_hackathon.novel.dto.NovelModifyDTO;
 import com.daelim.daelim_hackathon.novel.dto.NovelDTO;
 import com.daelim.daelim_hackathon.common.dto.StatusDTO;
+import com.daelim.daelim_hackathon.novel.dto.SearchPageRequestDTO;
 
 public interface NovelService {
     StatusDTO saveNovel(NovelDTO novelDTO);
-    NovelDTO getNovel(Long novelId, String username);
+    NovelDTO getNovel(Long novelId);
     PageResultDTO<NovelDTO, Object[]> getNovels(NovelPageRequestDTO pageRequestDTO);
+    PageResultDTO<NovelDTO, Object[]> searchNovels(SearchPageRequestDTO pageRequestDTO);
     StatusDTO deleteNovel(Long novelId, String username);
     StatusDTO updateNovel(Long novelId, NovelModifyDTO modifyDTO);
     StatusDTO love(Long novelId, String username);

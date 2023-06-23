@@ -10,6 +10,7 @@ import com.daelim.daelim_hackathon.novel.domain.Novel;
 import com.daelim.daelim_hackathon.novel.dto.NovelModifyDTO;
 import com.daelim.daelim_hackathon.novel.dto.NovelDTO;
 import com.daelim.daelim_hackathon.common.dto.StatusDTO;
+import com.daelim.daelim_hackathon.novel.dto.SearchPageRequestDTO;
 import com.daelim.daelim_hackathon.novel.repo.NovelRepository;
 import com.daelim.daelim_hackathon.novel.repo.UserNovelRepository;
 import lombok.RequiredArgsConstructor;
@@ -47,28 +48,18 @@ public class NovelServiceImpl implements NovelService{
 
 
     @Override
-    public NovelDTO getNovel(Long novelId, String name) {
-        Optional<User> userOptional = userRepository.findByName(name);
+    public NovelDTO getNovel(Long novelId) {
         Optional<Novel> novelOptional = novelRepository.findById(novelId);
         User author;
         Novel novel;
-        if (userOptional.isPresent()) {
-            author = userOptional.get();
-        } else {
-            throw new RuntimeException("This account doesn't exist");
-        }
         if (novelOptional.isPresent()) {
             novel = novelOptional.get();
+            author = novel.getAuthor();
+            return entityToDTO(novel, author);
         } else {
             throw new RuntimeException("Not found this novel");
         }
-        if (author.getUsername().equals(novel.getAuthor().getUsername())) {
-            return entityToDTO(novel, author);
-        } else {
-            throw new RuntimeException("this account doesn't matched novels");
-        }
     }
-
 
     @Override
     public PageResultDTO<NovelDTO, Object[]> getNovels(NovelPageRequestDTO pageRequestDTO) {
@@ -121,6 +112,30 @@ public class NovelServiceImpl implements NovelService{
                 throw new RuntimeException("No permission");
             }
         }
+    }
+
+    @Override
+    public PageResultDTO<NovelDTO, Object[]> searchNovels(SearchPageRequestDTO pageRequestDTO) {
+        Function<Object[], NovelDTO> fn = (
+                entity -> entityToDTO(
+                        (Novel)entity[0],
+                        (User)entity[1]
+                )
+        );
+        Page<Object[]> result;
+        String category = pageRequestDTO.getCategory();
+        switch (category) {
+            case "g":
+                result = novelRepository.getNovelsByGenre(
+                        pageRequestDTO.getPageable(Sort.by("id").descending()),
+                        pageRequestDTO.getKeyword()
+                );
+                return new PageResultDTO<>(result, fn);
+
+            case "t":
+
+        }
+        return null;
     }
 
 

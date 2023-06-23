@@ -9,6 +9,7 @@ import com.daelim.daelim_hackathon.drawing.service.PapagoService;
 import com.daelim.daelim_hackathon.novel.dto.NovelModifyDTO;
 import com.daelim.daelim_hackathon.novel.dto.NovelDTO;
 import com.daelim.daelim_hackathon.novel.dto.NovelPageRequestDTO;
+import com.daelim.daelim_hackathon.novel.dto.SearchPageRequestDTO;
 import com.daelim.daelim_hackathon.novel.service.NovelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -59,6 +60,23 @@ public class NovelController {
     }
 
     /**
+     * 내 소설 리스트 혹은, 내가 좋아요 누른 소설 리스트 불러오기
+     *
+     * @param pageRequestDTO
+     * @return pageResultDTO
+     */
+    @GetMapping(value = "/search")
+    public ResponseEntity searchList(@ModelAttribute SearchPageRequestDTO pageRequestDTO) {
+        try {
+            log.info(pageRequestDTO.getKeyword());
+            return new ResponseEntity<>(novelService.searchNovels(pageRequestDTO), HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /**
      * 소설 생성하기
      *
      * @param dto
@@ -82,9 +100,9 @@ public class NovelController {
      * @return novelDTO
      */
     @GetMapping(value = "/{id}")
-    public ResponseEntity read(@PathVariable(value = "id") String id, @ModelAttribute NameDTO nameDTO) {
+    public ResponseEntity read(@PathVariable(value = "id") String id) {
         try {
-            return new ResponseEntity<>(novelService.getNovel(Long.parseLong(id), nameDTO.getName()), HttpStatus.OK);
+            return new ResponseEntity<>(novelService.getNovel(Long.parseLong(id)), HttpStatus.OK);
         }catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
