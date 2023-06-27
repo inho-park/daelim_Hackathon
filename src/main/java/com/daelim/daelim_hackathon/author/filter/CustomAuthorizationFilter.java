@@ -65,7 +65,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     response.setHeader("error", "you're monster");
                     response.setStatus(HttpStatus.FORBIDDEN.value());
                     Map<String, String> error = new HashMap<>();
-                    error.put("error", e.getMessage());
+                    error.put("error", "토큰 기한 만료");
                     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                     // fasterxml.json 기능 중 하나로 ServletOutputStream 에 직접 error(Map)를 집어넣을 수 있음
                     new ObjectMapper().writeValue(response.getOutputStream(), error);

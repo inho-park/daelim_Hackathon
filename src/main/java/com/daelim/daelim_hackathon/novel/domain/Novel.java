@@ -38,6 +38,7 @@ public class Novel extends BaseTimeEntity {
     public void changeTitle(String title) {
         this.title = title;
     }
+
     public void changeIsPublic() {
         this.isPublic = true;
     }

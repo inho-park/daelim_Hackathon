@@ -137,7 +137,7 @@ public class AuthorController {
                 response.setHeader("error", "you're monster");
                 response.setStatus(HttpStatus.FORBIDDEN.value());
                 Map<String, String> error = new HashMap<>();
-                error.put("error", "need login");
+                error.put("error", "재로그인");
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 // fasterxml.json 기능 중 하나로 ServletOutputStream 에 직접 error(Map)를 집어넣을 수 있음
                 new ObjectMapper().writeValue(response.getOutputStream(), error);
